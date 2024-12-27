@@ -4,7 +4,7 @@ import { AlbumObject, ArtistObject, PlaylistObject, TrackObject } from "./object
 
 interface SearchParameters {
     query: string;
-    type: ["album", "artist", "playlist", "track"];
+    type: ("album" | "artist" | "playlist" | "track")[];
     market?: string;
     limit?: number;
     offset?: number;
@@ -20,7 +20,7 @@ interface SearchResponseHeader {
     total: number;
 }
 
-interface SearchResponse {
+export interface SearchResponse {
     tracks: SearchResponseHeader & { items: TrackObject[] };
     albums: SearchResponseHeader & { items: AlbumObject[] };
     artists: SearchResponseHeader & { items: ArtistObject[] };
@@ -35,6 +35,7 @@ export async function search({
     offset,
     include_external,
 }: SearchParameters): Promise<SearchResponse> {
+    console.log("search called");
     const token = await getSpotifyToken();
 
     const response = await axios.get('https://api.spotify.com/v1/search', {
