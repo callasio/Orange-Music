@@ -35,7 +35,6 @@ export async function search({
     offset,
     include_external,
 }: SearchParameters): Promise<SearchResponse> {
-    console.log("search called");
     const token = await getSpotifyToken();
 
     const response = await axios.get('https://api.spotify.com/v1/search', {
