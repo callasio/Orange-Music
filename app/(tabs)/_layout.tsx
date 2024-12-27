@@ -31,7 +31,7 @@ export default function TabLayout() {
         name="index"
         options={{
           title: 'Playlist',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          tabBarIcon: ({ color }) => <MaterialIcons size={28} name="queue-music" color={color} />,
         }}
       />
       <Tabs.Screen

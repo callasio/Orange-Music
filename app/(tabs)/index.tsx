@@ -5,14 +5,12 @@ import CardElement from "@/components/CardElement";
 
 const App = () => {
   const [currentScreen, setCurrentScreen] = useState("Home"); // 현재 화면 상태
-  const [screenContent, setScreenContent] = useState<string | null>(null); // 화면에 표시할 내용
   const [playlistData, setPlaylistData] = useState<any[]>([]); // 플레이리스트 데이터
   const [playlistName, setPlaylistName] = useState<string>(""); // 현재 플레이리스트 이름
   const [loading, setLoading] = useState(false); // 로딩 상태
 
-  const handlePress = async (screen: string, content: string | null, playlistId: string) => {
+  const handlePress = async (screen: string, playlistId: string) => {
     setCurrentScreen(screen); // 화면 변경
-    setScreenContent(content); // 화면 텍스트 설정
 
     if (playlistId) {
       setLoading(true);
@@ -38,32 +36,26 @@ const App = () => {
   const buttons = [
     {
       image: "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000d72cac50b6f9aec13ee1d370465f",
-      content: "This is the first playlist.",
       playlistId: "779iLhzoPQSF3Vb9AuiFTZ",
     },
     {
       image: "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000d72ccccae3724b784630e6223071",
-      content: "Welcome to the second playlist!",
       playlistId: "0e1CZktKWxzUtZXpKO8Gza",
     },
     {
       image: "https://mosaic.scdn.co/640/ab67616d00001e0255612ece447bec5d62c68375ab67616d00001e02608a63ad5b18e99da94a3f73ab67616d00001e02dbeec63ad914c973e75c24dfab67616d00001e02e230f303815e82a86713eedd",
-      content: "Here is playlist number 3.",
       playlistId: "6ZmqDRJKJf3v3LzYZAaGGU",
     },
     {
       image: "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da84d832b4cb718ffa65d03eb336",
-      content: "Here is playlist number 3.",
       playlistId: "2pUNSCOOr9lVzyMIIXO1eG",
     },
     {
       image: "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da84c6e78728dfd60fa95a883b86",
-      content: "Here is playlist number 3.",
       playlistId: "583cSUdsldtNLlMl4Me1Ux",
     },
     {
       image: "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da848191d59af119167ed25e1736",
-      content: "Here is playlist number 3.",
       playlistId: "7DPSUXq6oVgBFdwiHYeL4y",
     },
   ];
@@ -78,7 +70,7 @@ const App = () => {
             <TouchableOpacity
               key={index}
               style={styles.button}
-              onPress={() => handlePress(`Screen${index + 1}`, button.content, button.playlistId)}
+              onPress={() => handlePress(`Screen${index + 1}`, button.playlistId)}
             >
               <Image source={{ uri: button.image }} style={styles.buttonImage} />
             </TouchableOpacity>
@@ -93,7 +85,7 @@ const App = () => {
     <View style={styles.screen}>
       {loading ? (
         <ActivityIndicator size="large" color="#1DB954" />
-      ) : playlistData.length > 0 ? (
+      ) :  (
         <>
           <Text style={styles.text}>{playlistName}</Text> 
           <FlatList
@@ -111,10 +103,8 @@ const App = () => {
             )}
           />
         </>
-      ) : (
-        <Text style={styles.text}>{screenContent}</Text>
-      )}
-      <TouchableOpacity style={styles.backButton} onPress={() => handlePress("Home", null, "")}>
+      ) }
+      <TouchableOpacity style={styles.backButton} onPress={() => handlePress("Home",  "")}>
         <Text style={styles.backButtonText}>Go Back</Text>
       </TouchableOpacity>
     </View>
@@ -159,43 +149,22 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 24,
     fontWeight: "bold",
+    marginTop: 20, 
     marginBottom: 20,
     textAlign: "center",
     paddingHorizontal: 20,
   },
-  playlistItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 10,
-    marginBottom: 10,
-    backgroundColor: "#ffffff",
-    borderRadius: 8,
-    shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
-  },
-  playlistImage: {
-    width: 50,
-    height: 50,
-    borderRadius: 8,
-    marginRight: 10,
-  },
-  songName: {
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  artistName: {
-    fontSize: 14,
-    color: "#666",
-  },
+  
   backButton: {
-    marginTop: 20,
+    marginTop: 10, // 위에서 여백 추가
+    marginBottom: 10,
+    alignSelf: "center", // 중앙 정렬
     paddingVertical: 10,
     paddingHorizontal: 20,
     backgroundColor: "#007BFF",
     borderRadius: 5,
   },
+  
   backButtonText: {
     color: "white",
     fontSize: 16,
