@@ -30,7 +30,8 @@ export default function SearchResult({
                     artist: type === 'artist' ? undefined : 
                                 type !== 'playlist' 
                                 ? (item as TrackObject | AlbumObject).artists.map((artist) => artist.name).join(', ')
-                                : (item as PlaylistObject).owner.display_name
+                                : (item as PlaylistObject).owner.display_name,
+                    id: item.id,
                 }} type={type} />
             }}
         />

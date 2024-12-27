@@ -1,13 +1,16 @@
 import { ItemInfo } from '@/components/CardElement';
-import { Text } from 'react-native';
+import { Route, useLocalSearchParams } from 'expo-router';
+import { Text, View } from 'react-native';
 
-export default function TrackPage({
-    name,
-    artist,
-    image,
-    id,
-}: ItemInfo) 
-    {return (
-        <Text>Track Page</Text>
-    )
+export default function TrackPage() {
+    const {name, artist, image, id} = useLocalSearchParams<Route & ItemInfo>();
+    
+    console.log(name, artist, image, id);
+
+    return (
+        <View>
+            <Text>{name}</Text>
+            <Text>{artist}</Text>
+        </View>
+    );
 }
