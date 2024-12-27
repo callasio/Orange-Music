@@ -1,10 +1,12 @@
-import { StyleSheet, Text, View, ScrollView, TextInput, FlatList, Pressable, Alert } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, TextInput, FlatList, Pressable, Alert, ActivityIndicator } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { useEffect, useRef, useState } from 'react';
 import { MaterialIcons } from '@expo/vector-icons';
 import Tag from '@/components/Tag';
 import { search, SearchResponse } from '@/api/search';
 import SearchResult from '@/components/SearchResult';
+import axios from 'axios';
+import { getSpotifyToken } from '@/api/token';
 
 type SearchType = 'track' | 'album' | 'artist' | 'playlist';
 
@@ -17,6 +19,8 @@ export default function SearchScreen() {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<SearchResponse | null>(null);
   const [dataType, setDataType] = useState<SearchType>('track');
+
+  const [noQuery, setNoQuery] = useState(true);
 
   const fetchData = async (query: string, type: SearchType[]) => {
     try {
@@ -33,11 +37,34 @@ export default function SearchScreen() {
     }
   }
 
+  const MoreData = async (next: string) => {
+    if (data === null) return;
+    try {
+      const moreData = await axios.get(next, {
+        headers: {
+          'Authorization': 'Bearer ' + (await getSpotifyToken()).access_token
+        }
+      },);
+      setData({
+        ...data,
+        [`${dataType}s`]: {
+          ...data[`${dataType}s`],
+          items: [...data[`${dataType}s`].items, ...moreData.data[`${dataType}s`].items]
+        }
+      });
+    } catch (error: any) {
+      Alert.alert('Error', error.message);
+    }
+  }
+
   useEffect(() => {
     setLoading(true);
-    if (query !== '' && searchType !== null) {
+    if (query !== '') {
+      setNoQuery(false);
       fetchData(query, [searchType]);
-    }}, [query, searchType]);
+    }
+    else setNoQuery(true);
+  }, [query, searchType]);
 
   return (
     <SafeAreaProvider>
@@ -77,12 +104,15 @@ export default function SearchScreen() {
             }} />
           </View>
           {
+            noQuery ? (
+              <Text style={{ textAlign: 'center', fontSize: 20 }}>Search for something!</Text>
+            ) :
             loading ? (
-              <View>
-                <Text>Loading...</Text>
-              </View>
+              <ActivityIndicator style={{ height: 'auto' }} size="large" color="#1DB954" />
             ) : (
-              <SearchResult data={data!} type={dataType}/>
+              <SearchResult data={data!} type={dataType} onEndReached={
+                data![`${dataType}s`].next === null ? () => { } : () => MoreData(data![`${dataType}s`].next!)
+              } />
             )
           }
         </View>
