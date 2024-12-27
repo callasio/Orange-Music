@@ -1,7 +1,13 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 
+interface Item {
+  name: string;
+  artist?: string;
+  image: string;
+}
+
 interface ElementProps {
-    item: any;
+    item: Item;
     type: "track" | "album" | "artist" | "playlist";
 }
 
@@ -14,7 +20,7 @@ export default function Element({
         <Image source={{ uri: item.image }} style={styles.playlistImage} />
         <View>
             <Text style={styles.songName}>{item.name}</Text>
-            <Text style={styles.artistName}>{item.artist}</Text>
+            {item.artist && <Text style={styles.artistName}>{item.artist}</Text>}
         </View>
     </View>
   );
