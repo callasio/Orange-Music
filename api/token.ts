@@ -7,8 +7,9 @@ interface SpotifyToken {
     expires_in: number;
 }
 
-export async function getSpotifyToken(): Promise<SpotifyToken> {
-    console.log("getSpotifyToken called");
+let lastSession: { token: SpotifyToken, timestamp: number } | null = null;
+
+async function fetchSpotifyToken(): Promise<SpotifyToken> {
     const response = await axios.post('https://accounts.spotify.com/api/token', null, {
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
@@ -19,7 +20,17 @@ export async function getSpotifyToken(): Promise<SpotifyToken> {
         }
     });
 
-
-    console.log("getSpotifyToken finished");
     return response.data;
+}
+
+
+export async function getSpotifyToken(): Promise<SpotifyToken> {
+    if (lastSession === null || Date.now() - lastSession.timestamp > lastSession.token.expires_in * 1000) {
+        lastSession = {
+            token: await fetchSpotifyToken(),
+            timestamp: Date.now()
+        };
+    }
+
+    return lastSession.token;
 }
