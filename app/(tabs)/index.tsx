@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, Image, StyleSheet, FlatList, ActivityIndicator } from "react-native";
 import { playlist } from "../../api/playlist"; // Spotify API 호출 함수
+import CardElement from "@/components/CardElement";
 
 const App = () => {
   const [currentScreen, setCurrentScreen] = useState("Home"); // 현재 화면 상태
@@ -22,6 +23,7 @@ const App = () => {
           name: item.track.name,
           artist: item.track.artists.map((artist: any) => artist.name).join(", "),
           image: item.track.album.images[0]?.url || "https://via.placeholder.com/150",
+          id: item.track.id,
         }));
         setPlaylistData(tracks); // 가져온 트랙 데이터를 설정
       } catch (error) {
@@ -98,13 +100,14 @@ const App = () => {
             data={playlistData}
             keyExtractor={(item, index) => index.toString()}
             renderItem={({ item }) => (
-              <View style={styles.playlistItem}>
-                <Image source={{ uri: item.image }} style={styles.playlistImage} />
-                <View>
-                  <Text style={styles.songName}>{item.name}</Text>
-                  <Text style={styles.artistName}>{item.artist}</Text>
-                </View>
-              </View>
+              // <View style={styles.playlistItem}>
+              //   <Image source={{ uri: item.image }} style={styles.playlistImage} />
+              //   <View>
+              //     <Text style={styles.songName}>{item.name}</Text>
+              //     <Text style={styles.artistName}>{item.artist}</Text>
+              //   </View>
+              // </View>
+              <CardElement item={item} type="track" />
             )}
           />
         </>
