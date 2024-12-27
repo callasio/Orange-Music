@@ -4,25 +4,28 @@ import { useEffect, useRef, useState } from 'react';
 import { MaterialIcons } from '@expo/vector-icons';
 import Tag from '@/components/Tag';
 import { search, SearchResponse } from '@/api/search';
+import SearchResult from '@/components/SearchResult';
+
+type SearchType = 'track' | 'album' | 'artist' | 'playlist';
 
 export default function SearchScreen() {
   const textInputRef = useRef<TextInput>(null);
   const [query, setQuery] = useState('');
 
-  const [searchType, setSearchType] = useState<'track' | 'album' | 'artist' | 'playlist' | null>(null);
+  const [searchType, setSearchType] = useState<SearchType>('track');
 
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<SearchResponse | null>(null);
+  const [dataType, setDataType] = useState<SearchType>('track');
 
-  const fetchData = async (query: string, type: ('track' | 'album' | 'artist' | 'playlist')[]) => {
+  const fetchData = async (query: string, type: SearchType[]) => {
     try {
-      setLoading(true);
       const data = await search({
         query: query,
         type: type,
-        limit: 50,
       });
       setData(data);
+      setDataType(type[0]);
     } catch (error: any) {
       Alert.alert('Error', error.message);
     } finally {
@@ -31,6 +34,7 @@ export default function SearchScreen() {
   }
 
   useEffect(() => {
+    setLoading(true);
     if (query !== '' && searchType !== null) {
       fetchData(query, [searchType]);
     }}, [query, searchType]);
@@ -60,16 +64,16 @@ export default function SearchScreen() {
             gap: 10,
           }}>
             <Tag name="Track" toggled={searchType === 'track'} onClick={() => {
-              setSearchType(searchType === 'track' ? null : 'track');
+              setSearchType('track');
             }} />
             <Tag name="Album" toggled={searchType === 'album'} onClick={() => {
-              setSearchType(searchType === 'album' ? null : 'album');
+              setSearchType('album');
             }} />
             <Tag name="Playlist" toggled={searchType === 'playlist'} onClick={() => {
-              setSearchType(searchType === 'playlist' ? null : 'playlist');
+              setSearchType('playlist');
             }} />
             <Tag name="Artist" toggled={searchType === 'artist'} onClick={() => {
-              setSearchType(searchType === 'artist' ? null : 'artist');
+              setSearchType('artist');
             }} />
           </View>
           {
@@ -78,17 +82,7 @@ export default function SearchScreen() {
                 <Text>Loading...</Text>
               </View>
             ) : (
-              <FlatList
-                data={[
-                  ...(data?.tracks?.items ?? []),
-                  ...(data?.albums?.items ?? []),
-                  ...(data?.playlists?.items ?? []),
-                  ...(data?.artists?.items ?? []),
-                ]}
-                renderItem={({ item }) => (
-                  <Text>{item.name}</Text>
-                )}
-              />
+              <SearchResult data={data!} type={dataType}/>
             )
           }
         </View>
