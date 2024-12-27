@@ -1,3 +1,4 @@
+import { useRouter } from "expo-router";
 import { StyleSheet, Text, View, Image, TouchableOpacity, Pressable } from "react-native";
 
 interface Item {
@@ -15,8 +16,13 @@ export default function Element({
     item,
     type,
 }: ElementProps) {
+  const router = useRouter();
+
   return (
     <Pressable 
+      onPress={() => 
+        router.push(`/pages/${type}`)
+      }
       style={({ pressed }) => [styles.playlistItem, { backgroundColor: pressed ? "#f0f0f0" : "#ffffff" }]}>
         <Image source={{ uri: item.image }} style={styles.playlistImage} />
         <View>
