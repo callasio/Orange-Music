@@ -1,14 +1,15 @@
 import { useRouter } from "expo-router";
 import { StyleSheet, Text, View, Image, TouchableOpacity, Pressable } from "react-native";
 
-interface Item {
+export interface ItemInfo {
   name: string;
   artist?: string;
   image: string;
+  id: string;
 }
 
 interface ElementProps {
-    item: Item;
+    item: ItemInfo;
     type: "track" | "album" | "artist" | "playlist";
 }
 
@@ -21,7 +22,10 @@ export default function Element({
   return (
     <Pressable 
       onPress={() => 
-        router.push(`/pages/${type}`)
+        router.push({
+          pathname: `/pages/${type}`,
+          params: { ...item },
+        })
       }
       style={({ pressed }) => [styles.playlistItem, { backgroundColor: pressed ? "#f0f0f0" : "#ffffff" }]}>
         <Image source={{ uri: item.image }} style={styles.playlistImage} />
