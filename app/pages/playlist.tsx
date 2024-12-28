@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { ActivityIndicator, FlatList, Text, View, Image, StyleSheet } from "react-native";
 import { Route, useLocalSearchParams } from "expo-router";
 import { playlist } from "../../api/playlist"; // Spotify API 호출 함수
-import { ItemInfo } from "@/components/CardElement";
+import CardElement, { ItemInfo } from "@/components/CardElement";
 
 export default function PlaylistPage() {
   const {name, artist, image, id} = useLocalSearchParams<Route & ItemInfo>();
@@ -20,13 +20,13 @@ export default function PlaylistPage() {
     const fetchPlaylist = async () => {
       try {
         const data = await playlist({ playlist_id: id as string }); // Spotify API 호출
-        setPlaylistName(data.name); // 플레이리스트 이름 설정
-        const tracks = data.tracks.items.map((item: any) => ({
+        setPlaylistName(data.name); // 플레이리스트 이름 설정o
+        const tracks = data.tracks.items.map((item: any) => item.track ? ({
           id: item.track.id,
           name: item.track.name,
           artist: item.track.artists.map((artist: any) => artist.name).join(", "),
           image: item.track.album.images[0]?.url || "https://via.placeholder.com/150",
-        }));
+        }) : null).filter((item: any) => item !== null);
         setPlaylistData(tracks); // 트랙 데이터 설정
       } catch (error) {
         console.error("Error fetching playlist:", error);
@@ -51,15 +51,9 @@ export default function PlaylistPage() {
       <Text style={styles.title}>{playlistName}</Text>
       <FlatList
         data={playlistData}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item, index) => `${item.id}+${index}`}
         renderItem={({ item }) => (
-          <View style={styles.trackContainer}>
-            <Image source={{ uri: item.image }} style={styles.trackImage} />
-            <View style={styles.trackInfo}>
-              <Text style={styles.trackName}>{item.name}</Text>
-              <Text style={styles.trackArtist}>{item.artist}</Text>
-            </View>
-          </View>
+          <CardElement item={item} type="track" />
         )}
       />
     </View>
