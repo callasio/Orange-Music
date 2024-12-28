@@ -5,7 +5,7 @@ import { playlist } from "../../api/playlist"; // Spotify API 호출 함수
 import CardElement, { ItemInfo } from "@/components/CardElement";
 
 export default function PlaylistPage() {
-  const {name, artist, image, id} = useLocalSearchParams<Route & ItemInfo>();
+  const {id} = useLocalSearchParams<Route & ItemInfo>();
   const [playlistName, setPlaylistName] = useState("");
   const [playlistData, setPlaylistData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
