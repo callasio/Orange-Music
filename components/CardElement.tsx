@@ -20,7 +20,8 @@ export default function Element({
     item,
     type,
     onHistoryUpdate = () => {},
-}: ElementProps & { onHistoryUpdate?: () => void }) {
+    isHistory = false,
+}: ElementProps & { onHistoryUpdate?: () => void, isHistory?: boolean }) {
   const router = useRouter();
 
   return (
@@ -42,7 +43,9 @@ export default function Element({
         <Image source={{ uri: item.image }} style={styles.playlistImage} />
         <View>
             <Text style={styles.songName}>{item.name}</Text>
-            {item.artist && <Text style={styles.artistName}>{item.artist}</Text>}
+            <Text style={styles.artistName}>{(
+              isHistory ? `${type.charAt(0).toUpperCase() + type.slice(1)} \u00B7 ` : ""
+            ) + item.artist}</Text>
         </View>
     </Pressable>
   );
