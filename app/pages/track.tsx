@@ -1,12 +1,31 @@
+import { TrackObject } from '@/api/object';
+import { getTrack } from '@/api/track';
 import { ItemInfo } from '@/components/CardElement';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
+import AlbumPreview from '@/components/track/album';
+import ArtistFrame from '@/components/track/artist';
+import { Colors } from '@/constants/Colors';
 import { canOpenURL, openURL } from 'expo-linking';
 import { Route, useLocalSearchParams } from 'expo-router';
-import { Button, Image, Text, View } from 'react-native';
-import Animated from 'react-native-reanimated';
+import { useEffect, useState } from 'react';
+import { ActivityIndicator, Button, Image, Text, View } from 'react-native';
 
 export default function TrackPage() {
   const { name, artist, image, id } = useLocalSearchParams<Route & ItemInfo>();
+
+  const [data, setData] = useState<TrackObject>();
+  const [loading, setLoading] = useState(true);
+  
+  const fetchTrack = async () => {
+    setLoading(true);
+    const newData = await getTrack({ track_id: id as string });
+    setData(newData);
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    fetchTrack();
+  }, []);
 
   return (
     <ParallaxScrollView headerImage={
@@ -17,14 +36,25 @@ export default function TrackPage() {
       dark: '',
       light: ''
     }}>
-      <View style={{ padding: 0 }}>
-        <Button title="Show in Spotify" onPress={() => {
+      <Button title="Show in Spotify" 
+        color={Colors.spotify.green}
+        onPress={() => {
           const url= `https://open.spotify.com/track/${id}`;
           openURL(url);
-        }} />
-        <Text>{name}</Text>
-        <Text>{artist}</Text>
-      </View>
+      }} />
+      {( loading ? 
+      <View style={{ height: '100%', justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator/>
+      </View> :
+      <View style={{ padding: 20, flexDirection: 'column', gap: 20 }}>
+        {
+          data?.artists.map((artist, index) => (
+            <ArtistFrame name={artist.name} id={artist.id} key={`artists${index}`} />
+          ))
+        }
+        <Text style={{ fontSize: 24, fontWeight: 'bold' }}>Album "{data?.album?.name}"</Text>
+        <AlbumPreview id={data?.album.id!} />
+      </View>)}
     </ParallaxScrollView>
   );
 }

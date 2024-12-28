@@ -1,4 +1,4 @@
-import { HISTORY_KEY } from "@/app/(tabs)/search";
+import { HISTORY_KEY } from "@/constants/Keys";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
 import { StyleSheet, Text, View, Image, TouchableOpacity, Pressable } from "react-native";

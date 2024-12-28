@@ -9,10 +9,9 @@ import axios from 'axios';
 import { getSpotifyToken } from '@/api/token';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CardElement, { ElementProps } from '@/components/CardElement';
+import { HISTORY_KEY } from '@/constants/Keys';
 
 type SearchType = 'track' | 'album' | 'artist' | 'playlist';
-
-export const HISTORY_KEY = 'search-history';
 
 export default function SearchScreen() {
   const textInputRef = useRef<TextInput>(null);

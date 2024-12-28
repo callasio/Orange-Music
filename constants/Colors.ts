@@ -23,4 +23,9 @@ export const Colors = {
     tabIconDefault: '#9BA1A6',
     tabIconSelected: tintColorDark,
   },
+  spotify: {
+    green: '#1DB954',
+    black: '#191414',
+    white: '#FFFFFF',
+  }
 };
