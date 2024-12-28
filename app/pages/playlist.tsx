@@ -20,13 +20,13 @@ export default function PlaylistPage() {
     const fetchPlaylist = async () => {
       try {
         const data = await playlist({ playlist_id: id as string }); // Spotify API 호출
-        setPlaylistName(data.name); // 플레이리스트 이름 설정
-        const tracks = data.tracks.items.map((item: any) => ({
+        setPlaylistName(data.name); // 플레이리스트 이름 설정o
+        const tracks = data.tracks.items.map((item: any) => item.track ? ({
           id: item.track.id,
           name: item.track.name,
           artist: item.track.artists.map((artist: any) => artist.name).join(", "),
           image: item.track.album.images[0]?.url || "https://via.placeholder.com/150",
-        }));
+        }) : null).filter((item: any) => item !== null);
         setPlaylistData(tracks); // 트랙 데이터 설정
       } catch (error) {
         console.error("Error fetching playlist:", error);
