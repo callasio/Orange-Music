@@ -132,7 +132,7 @@ export default function SearchScreen() {
                   keyExtractor={(item, index) => index.toString()}
                   renderItem={({ item }) => {
                     return (
-                      <CardElement item={item.item} type={item.type} />
+                      <CardElement item={item.item} type={item.type} onHistoryUpdate={fetchHistory}/>
                     );
                   }}
                 />

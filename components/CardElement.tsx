@@ -19,7 +19,8 @@ export interface ElementProps {
 export default function Element({
     item,
     type,
-}: ElementProps) {
+    onHistoryUpdate = () => {},
+}: ElementProps & { onHistoryUpdate?: () => void }) {
   const router = useRouter();
 
   return (
@@ -29,7 +30,7 @@ export default function Element({
             const notNullHistory = history ? JSON.parse(history) as ElementProps[] : [];
             const updatedHistory = [{item, type}, ...notNullHistory];
             const validHistory = updatedHistory.filter((item, index) => updatedHistory.findIndex((value) => value.item.id === item.item.id) === index).slice(0, 49);
-            AsyncStorage.setItem(HISTORY_KEY, JSON.stringify(validHistory));
+            AsyncStorage.setItem(HISTORY_KEY, JSON.stringify(validHistory)).then(onHistoryUpdate);
           });
           router.push({
             pathname: `/pages/${type}`,
