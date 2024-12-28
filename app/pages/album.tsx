@@ -48,7 +48,6 @@ export default function AlbumlistPage() {
 
   return (
     <View style={styles.screen}>
-      <Text style={styles.title}>{albumlistName}</Text>
      <FlatList
              data={albumlistData}
              keyExtractor={(item, index) => `${item.id}+${index}`}
