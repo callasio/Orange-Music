@@ -3,6 +3,7 @@ import { ActivityIndicator, FlatList, Text, View, Image, StyleSheet } from "reac
 import { Route, useLocalSearchParams } from "expo-router";
 import { album } from "../../api/album"; // Spotify API 호출 함수
 import CardElement, { ItemInfo } from "@/components/CardElement";
+import ParallaxScrollView from "@/components/ParallaxScrollView";
 
 export default function AlbumlistPage() {
   const {name, artist, image, id} = useLocalSearchParams<Route & ItemInfo>();
@@ -47,15 +48,23 @@ export default function AlbumlistPage() {
   }
 
   return (
-    <View style={styles.screen}>
-     <FlatList
-             data={albumlistData}
-             keyExtractor={(item, index) => `${item.id}+${index}`}
-             renderItem={({ item }) => (
-               <CardElement item={item} type="track" />
-             )}
-           />
-    </View>
+    <ParallaxScrollView headerImage={
+        <Image 
+            source={{uri: image as string}}
+            style={{width: '100%', height: '100%'}}
+        />
+    } headerBackgroundColor={{dark: '', light: ''}}>
+        <View style={styles.screen}>
+            <FlatList
+                    data={albumlistData}
+                    scrollEnabled={false}
+                    keyExtractor={(item, index) => `${item.id}+${index}`}
+                    renderItem={({ item }) => (
+                    <CardElement item={item} type="track" />
+                    )}
+            />
+        </View>
+    </ParallaxScrollView>
   );
 }
 
@@ -63,7 +72,7 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: "#fff",
-    paddingTop: 20,
+    padding: 10,
   },
   title: {
     fontSize: 20,
