@@ -43,9 +43,9 @@ export default function Element({
         <Image source={{ uri: item.image }} style={styles.playlistImage} />
         <View>
             <Text style={styles.songName}>{item.name}</Text>
-            <Text style={styles.artistName}>{(
+            {item.artist && <Text style={styles.artistName}>{(
               isHistory ? `${type.charAt(0).toUpperCase() + type.slice(1)} \u00B7 ` : ""
-            ) + item.artist}</Text>
+            ) + item.artist}</Text>}
         </View>
     </Pressable>
   );
