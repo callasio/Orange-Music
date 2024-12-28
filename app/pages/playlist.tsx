@@ -48,7 +48,6 @@ export default function PlaylistPage() {
 
   return (
     <View style={styles.screen}>
-      <Text style={styles.title}>{playlistName}</Text>
       <FlatList
         data={playlistData}
         keyExtractor={(item, index) => `${item.id}+${index}`}
