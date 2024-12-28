@@ -42,20 +42,15 @@ const styles = StyleSheet.create({
  
   playlistItem: {
     flexDirection: "row",
-    alignItems: "center",
     padding: 10,
-    marginBottom: 10,
-    backgroundColor: "#ffffff",
-    borderRadius: 8,
-    shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ddd",
   },
+  
   playlistImage: {
     width: 50,
     height: 50,
-    borderRadius: 8,
+    borderRadius: 5,
     marginRight: 10,
   },
   songName: {
