@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, ScrollView, TextInput, FlatList, Pressable, Alert, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View, TextInput, FlatList, Pressable, Alert, ActivityIndicator } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { useEffect, useRef, useState } from 'react';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -7,8 +7,12 @@ import { search, SearchResponse } from '@/api/search';
 import SearchResult from '@/components/SearchResult';
 import axios from 'axios';
 import { getSpotifyToken } from '@/api/token';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import CardElement, { ElementProps } from '@/components/CardElement';
 
 type SearchType = 'track' | 'album' | 'artist' | 'playlist';
+
+export const HISTORY_KEY = 'search-history';
 
 export default function SearchScreen() {
   const textInputRef = useRef<TextInput>(null);
@@ -21,6 +25,16 @@ export default function SearchScreen() {
   const [dataType, setDataType] = useState<SearchType>('track');
 
   const [noQuery, setNoQuery] = useState(true);
+
+  const [history, setHistory] = useState<ElementProps[]>([]);
+
+  const fetchHistory = async () => {
+    const history = await AsyncStorage.getItem(HISTORY_KEY);
+
+    if (history) {
+      setHistory(JSON.parse(history));
+    }
+  }
 
   const fetchData = async (query: string, type: SearchType[]) => {
     try {
@@ -58,6 +72,7 @@ export default function SearchScreen() {
   }
 
   useEffect(() => {
+    fetchHistory();
     setLoading(true);
     if (query !== '') {
       setNoQuery(false);
@@ -104,11 +119,29 @@ export default function SearchScreen() {
             }} />
           </View>
           {
-            noQuery ? (
-              <Text style={{ textAlign: 'center', fontSize: 20 }}>Search for something!</Text>
-            ) :
+            noQuery ? 
+            (history.length === 0 ? (
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                  <Text style={{ textAlign: 'center', fontSize: 20 }}>Search for something!</Text>
+                </View>
+            ) : (
+              <View style={{ flexDirection: "column", flex: 1 }}>
+                <Text style={{ fontSize: 20 }}>Recent Searches</Text>
+                <FlatList
+                  data={history}
+                  keyExtractor={(item, index) => index.toString()}
+                  renderItem={({ item }) => {
+                    return (
+                      <CardElement item={item.item} type={item.type} />
+                    );
+                  }}
+                />
+              </View>
+            )) :
             loading ? (
-              <ActivityIndicator style={{ height: 'auto' }} size="large" color="#1DB954" />
+              <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <ActivityIndicator style={{ height: 'auto' }} size="large" color="#1DB954" />
+              </View>
             ) : (
               <SearchResult data={data!} type={dataType} onEndReached={
                 data![`${dataType}s`].next === null ? () => { } : () => MoreData(data![`${dataType}s`].next!)
@@ -124,6 +157,7 @@ export default function SearchScreen() {
 const styles = StyleSheet.create({
   column: {
     flexDirection: 'column',
+    height: '100%',
     padding: 10,
     gap: 10,
   },

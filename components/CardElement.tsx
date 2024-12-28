@@ -1,5 +1,8 @@
+import { HISTORY_KEY } from "@/app/(tabs)/search";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
 import { StyleSheet, Text, View, Image, TouchableOpacity, Pressable } from "react-native";
+import Animated from "react-native-reanimated";
 
 export interface ItemInfo {
   name: string;
@@ -8,7 +11,7 @@ export interface ItemInfo {
   id: string;
 }
 
-interface ElementProps {
+export interface ElementProps {
     item: ItemInfo;
     type: "track" | "album" | "artist" | "playlist";
 }
@@ -21,11 +24,18 @@ export default function Element({
 
   return (
     <Pressable 
-      onPress={() => 
-        router.push({
-          pathname: `/pages/${type}`,
-          params: { ...item },
-        })
+      onPress={() => {
+          AsyncStorage.getItem(HISTORY_KEY).then((history) => {
+            const notNullHistory = history ? JSON.parse(history) as ElementProps[] : [];
+            const updatedHistory = [{item, type}, ...notNullHistory];
+            const validHistory = updatedHistory.filter((item, index) => updatedHistory.findIndex((value) => value.item.id === item.item.id) === index).slice(0, 49);
+            AsyncStorage.setItem(HISTORY_KEY, JSON.stringify(validHistory));
+          });
+          router.push({
+            pathname: `/pages/${type}`,
+            params: { ...item },
+          });
+        }
       }
       style={({ pressed }) => [styles.playlistItem, { backgroundColor: pressed ? "#f0f0f0" : "#ffffff" }]}>
         <Image source={{ uri: item.image }} style={styles.playlistImage} />
