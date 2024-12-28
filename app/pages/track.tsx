@@ -1,7 +1,8 @@
 import { ItemInfo } from '@/components/CardElement';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
+import { canOpenURL, openURL } from 'expo-linking';
 import { Route, useLocalSearchParams } from 'expo-router';
-import { Image, Text, View } from 'react-native';
+import { Button, Image, Text, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 export default function TrackPage() {
@@ -17,6 +18,10 @@ export default function TrackPage() {
       light: ''
     }}>
       <View style={{ padding: 0 }}>
+        <Button title="Show in Spotify" onPress={() => {
+          const url= `https://open.spotify.com/track/${id}`;
+          openURL(url);
+        }} />
         <Text>{name}</Text>
         <Text>{artist}</Text>
       </View>

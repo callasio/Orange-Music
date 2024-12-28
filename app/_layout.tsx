@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import 'react-native-reanimated';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { ItemInfo } from '@/components/CardElement';
 
 global.Buffer = require('buffer').Buffer;
 
@@ -33,6 +34,38 @@ export default function RootLayout() {
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen
+          name="pages/track"
+          options={({ route }) => {
+            const { name, artist, image, id } = route.params as ItemInfo;
+            return ({
+              headerTitle: name,
+          })}}
+        />
+        <Stack.Screen
+          name="pages/artist"
+          options={({ route }) => {
+            const { name, artist, image, id } = route.params as ItemInfo;
+            return ({
+              headerTitle: name,
+          })}}
+        />
+        <Stack.Screen
+          name="pages/playlist"
+          options={({ route }) => {
+            const { name, artist, image, id } = route.params as ItemInfo;
+            return ({
+              headerTitle: name,
+          })}}
+        />
+        <Stack.Screen
+          name="pages/album"
+          options={({ route }) => {
+            const { name, artist, image, id } = route.params as ItemInfo;
+            return ({
+              headerTitle: name,
+          })}}
+        />
         <Stack.Screen name="+not-found" />
       </Stack>
       <StatusBar style="auto" />
