@@ -29,7 +29,7 @@ export default function AlbumPreview({
     <View style={{ borderRadius: 10, overflow: 'hidden' }}>
         {loading ? (
             <View>
-                <ActivityIndicator />
+                <ActivityIndicator size="large" color={Colors.theme.primary} />
             </View>
         ) : (
             <View>
@@ -42,7 +42,7 @@ export default function AlbumPreview({
                             name: item.name,
                             artist: item.artists.map((artist: any) => artist.name).join(", "),
                             image: data!.images[0].url || "https://via.placeholder.com/150",
-                        }} type="track"/>
+                        }} type="track" margin={false}/>
                     )} 
                 />
                 <TouchableOpacity
@@ -50,7 +50,7 @@ export default function AlbumPreview({
                         padding: 10,
                         alignItems: 'center',
                         justifyContent: 'center',
-                        backgroundColor: Colors.theme.secondary, }}
+                        backgroundColor: Colors.theme.primary, }}
                     
                     onPress={() => {
                         router.push({
@@ -60,7 +60,7 @@ export default function AlbumPreview({
                     }}
                 >
                     <Text style={{
-                        color: Colors.theme.primary,
+                        color: Colors.theme.text,
                         fontSize: 16,
                         fontWeight: "bold",
                     }}>See More</Text>

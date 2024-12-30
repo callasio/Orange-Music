@@ -102,7 +102,7 @@ const App = () => {
   if (loading) {
     return (
       <View style={[commonstyles.container, { justifyContent: "center", alignItems: "center" }]}>
-        <ActivityIndicator size="large" color="#1DB954" />
+        <ActivityIndicator size="large" color={Colors.theme.primary} />
       </View>
     );
   }

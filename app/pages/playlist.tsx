@@ -42,7 +42,7 @@ export default function PlaylistPage() {
   if (loading) {
     return (
       <View style={styles.screen}>
-        <ActivityIndicator size="large" color="#1DB954" />
+        <ActivityIndicator size="large" color={Colors.theme.primary}  />
       </View>
     );
   }

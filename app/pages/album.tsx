@@ -4,6 +4,7 @@ import { Route, useLocalSearchParams } from "expo-router";
 import { album } from "../../api/album"; // Spotify API 호출 함수
 import CardElement, { ItemInfo } from "@/components/CardElement";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
+import { Colors } from "@/constants/Colors";
 
 export default function AlbumlistPage() {
   const {name, artist, image, id} = useLocalSearchParams<Route & ItemInfo>();
@@ -42,7 +43,7 @@ export default function AlbumlistPage() {
   if (loading) {
     return (
       <View style={styles.screen}>
-        <ActivityIndicator size="large" color="#1DB954" />
+        <ActivityIndicator size="large" color={Colors.theme.primary}  />
       </View>
     );
   }
@@ -71,7 +72,7 @@ export default function AlbumlistPage() {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: Colors.theme.background,
     padding: 10,
   },
   title: {

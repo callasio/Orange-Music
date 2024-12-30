@@ -22,7 +22,7 @@ export default function Tag({
             justifyContent: 'center',
         }} onPress={onClick}>
             <Text style={{
-                color: toggled ? Colors.theme.background : Colors.theme.text,
+                color: Colors.theme.text,
                 fontSize: 13,
             }}>{name}s</Text>
         </Pressable>
