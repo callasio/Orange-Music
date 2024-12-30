@@ -58,7 +58,11 @@ export default function AlbumPreview({
                         });
                     }}
                 >
-                    <Text>See More</Text>
+                    <Text style={{
+                        color: "#007AFF",
+                        fontSize: 16,
+                        fontWeight: "bold",
+                    }}>See More</Text>
                 </Pressable>
             </View>
         )}

@@ -38,7 +38,15 @@ export default function TabLayout() {
         name="search"
         options={{
           title: 'Search',
-          tabBarIcon: ({ color }) => <MaterialIcons size={28} name="search" color={color} />,
+          tabBarIcon: ({ focused, color }) => <MaterialIcons size={28} name="search" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="following"
+        options={{
+          title: 'Following',
+          tabBarIcon: ({ focused, color }) => <MaterialIcons size={28} name=
+            {focused ? "favorite" : "favorite-outline"} color={color} />,
         }}
       />
     </Tabs>
