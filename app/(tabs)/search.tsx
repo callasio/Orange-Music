@@ -10,6 +10,7 @@ import { getSpotifyToken } from '@/api/token';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CardElement, { ElementProps } from '@/components/CardElement';
 import { HISTORY_KEY } from '@/constants/Keys';
+import { Colors } from '@/constants/Colors';
 
 type SearchType = 'track' | 'album' | 'artist' | 'playlist';
 
@@ -82,15 +83,15 @@ export default function SearchScreen() {
 
   return (
     <SafeAreaProvider>
-      <SafeAreaView>
+      <SafeAreaView style={{ backgroundColor: Colors.theme.background }}>
         <View style={styles.column}>
           <View style={styles.searchBox}>
             <Pressable
               style={styles.searchButton}
-              android_ripple={{ color: 'gray', borderless: true }}
+              android_ripple={{ color: "rgba(128, 128, 128, 0.3)", borderless: true }}
               onPress={() => textInputRef.current?.focus()}
             >
-              <MaterialIcons style={{ flex: 0 }} name="search" size={24} color="black" />
+              <MaterialIcons style={{ flex: 0 }} name="search" size={24} color={Colors.theme.background} />
               <TextInput
                 ref={textInputRef}
                 style={styles.input}
@@ -125,7 +126,13 @@ export default function SearchScreen() {
                 </View>
             ) : (
               <View style={{ flexDirection: "column", flex: 1 }}>
-                <Text style={{ fontSize: 20 }}>Recent Searches</Text>
+                <Text style={{ 
+                  fontSize: 20,
+                  fontWeight: 'bold',
+                  marginBottom: 10,
+                  marginLeft: 10,
+                  color: Colors.theme.text,
+                }}>Recent Searches</Text>
                 <FlatList
                   data={history}
                   keyExtractor={(item, index) => index.toString()}
@@ -143,7 +150,7 @@ export default function SearchScreen() {
               </View>
             ) : (
               <SearchResult data={data!} type={dataType} onEndReached={
-                data![`${dataType}s`].next === null ? () => { } : () => MoreData(data![`${dataType}s`].next!)
+                data![`${dataType}s`]?.next ? () => MoreData(data![`${dataType}s`].next!) : () => {}
               } />
             )
           }
@@ -165,10 +172,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     elevation: 2,
     borderRadius: 100,
-    backgroundColor: 'lightgray',
+    backgroundColor: Colors.theme.primary,
   },
   searchButton: {
-    paddingStart: 10,
+    paddingStart: 15,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
@@ -177,5 +184,6 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 40,
     borderWidth: 0,
+    color: Colors.theme.background,
   },
 });

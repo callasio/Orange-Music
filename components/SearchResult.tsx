@@ -19,7 +19,7 @@ export default function SearchResult({
             onEndReached={onEndReached}
             onEndReachedThreshold={0.5}
             keyExtractor={(item, index) => index.toString()}
-            data={(data[`${type}s`].items as (TrackObject | AlbumObject | ArtistObject | PlaylistObject)[]).filter((item) => item !== null)}
+            data={(data[`${type}s`]?.items as (TrackObject | AlbumObject | ArtistObject | PlaylistObject)[] ?? []).filter((item) => item !== null)}
             renderItem={({ item }) => {
                 return <CardElement item={{
                     name: item.name,

@@ -42,7 +42,6 @@ const App = () => {
         }, {} as Record<string, any[]>);
 
         setPlaylistsByUser(groupedPlaylists);
-        console.log("Grouped Playlists by User:", groupedPlaylists);
 
         // Retrieve or initialize user order
         const savedOrder = await AsyncStorage.getItem("userOrder");
