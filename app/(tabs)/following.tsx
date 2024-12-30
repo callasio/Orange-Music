@@ -3,8 +3,8 @@ import { Colors } from '@/constants/Colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Text } from 'react-native';
-import DragList from 'react-native-draglist';
+import { FlatList, Text } from 'react-native';
+// import DragList from 'react-native-draglist';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 export default function FollowingPage() {
@@ -34,14 +34,18 @@ export default function FollowingPage() {
     return (
         <SafeAreaProvider>
             <SafeAreaView style={{ backgroundColor: Colors.theme.background }}>
-                <DragList
+                {/* <DragList
                     data={likedArtists}
                     
                     renderItem={({ item, onDragStart, onDragEnd }) => <
                         ArtistFrame id={item} onDragStart={onDragStart} onDragEnd={onDragEnd}/>}
                     keyExtractor={(item) => `following${item}`}
                     onReordered={onReordered}
-                />
+                /> */}
+                <FlatList
+                    data={likedArtists}
+                    renderItem={({ item }) => <Text>{item}</Text>}
+                    keyExtractor={(item) => `following${item}`} />
             </SafeAreaView>
         </SafeAreaProvider>);
 }
