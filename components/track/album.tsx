@@ -1,8 +1,9 @@
 import { album } from "@/api/album";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, View, Text, FlatList, Pressable } from "react-native";
+import { ActivityIndicator, View, Text, FlatList, Pressable, TouchableOpacity } from "react-native";
 import CardElement from "../CardElement";
 import { useRouter } from "expo-router";
+import { Colors } from "@/constants/Colors";
 
 export default function AlbumPreview({
     id,
@@ -25,7 +26,7 @@ export default function AlbumPreview({
     }, []);
 
   return (
-    <View style={{ borderRadius: 10, backgroundColor: 'white', overflow: 'hidden', borderWidth: 1, borderColor: 'black' }}>
+    <View style={{ borderRadius: 10, overflow: 'hidden' }}>
         {loading ? (
             <View>
                 <ActivityIndicator />
@@ -44,12 +45,12 @@ export default function AlbumPreview({
                         }} type="track"/>
                     )} 
                 />
-                <Pressable
-                    style={({ pressed }) => [{
+                <TouchableOpacity
+                    style={{
                         padding: 10,
                         alignItems: 'center',
                         justifyContent: 'center',
-                    }, { backgroundColor: pressed ? "#f0f0f0" : "#ffffff" }]}
+                        backgroundColor: Colors.theme.secondary, }}
                     
                     onPress={() => {
                         router.push({
@@ -59,11 +60,11 @@ export default function AlbumPreview({
                     }}
                 >
                     <Text style={{
-                        color: "#007AFF",
+                        color: Colors.theme.primary,
                         fontSize: 16,
                         fontWeight: "bold",
                     }}>See More</Text>
-                </Pressable>
+                </TouchableOpacity>
             </View>
         )}
     </View>

@@ -39,6 +39,7 @@ export default function TrackPage() {
           const url= `https://open.spotify.com/track/${id}`;
           openURL(url);
       }} />
+      <View style={{ backgroundColor: Colors.theme.background }}>
       {( loading ? 
       <View style={{ height: '100%', justifyContent: 'center', alignItems: 'center' }}>
         <ActivityIndicator/>
@@ -49,9 +50,9 @@ export default function TrackPage() {
             <ArtistFrame name={artist.name} id={artist.id} key={`artists${index}`} />
           ))
         }
-        <Text style={{ fontSize: 24, fontWeight: 'bold' }}>Album "{data?.album?.name}"</Text>
+        <Text style={{ fontSize: 24, fontWeight: 'bold', color: Colors.theme.text }}>Album "{data?.album?.name}"</Text>
         <AlbumPreview id={data?.album.id!} />
-      </View>)}
+      </View>)}</View>
     </ParallaxScrollView>
   );
 }

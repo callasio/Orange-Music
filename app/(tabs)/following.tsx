@@ -1,4 +1,5 @@
 import ArtistFrame from '@/components/following/artist';
+import { Colors } from '@/constants/Colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from 'expo-router';
 import { useEffect, useState } from 'react';
@@ -32,7 +33,7 @@ export default function FollowingPage() {
 
     return (
         <SafeAreaProvider>
-            <SafeAreaView>
+            <SafeAreaView style={{ backgroundColor: Colors.theme.background }}>
                 <DragList
                     data={likedArtists}
                     
