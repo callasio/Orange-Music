@@ -1,5 +1,10 @@
 import React from "react";
 import { View, Text, FlatList, Image, StyleSheet, TouchableOpacity, ActivityIndicator } from "react-native";
+import { Colors } from "@/constants/Colors";
+
+const back = Colors.theme.background;
+const line = Colors.theme.primary;
+
 
 interface Playlist {
   name: string;
