@@ -11,6 +11,7 @@ import { Route, useLocalSearchParams } from 'expo-router';
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { Button, Image, Pressable, FlatList, View, StyleSheet, Text, ActivityIndicator, Touchable, TouchableOpacity } from 'react-native';
+import Toast, { SuccessToast } from 'react-native-toast-message';
 
 
 export default function ArtistPage() {
@@ -55,6 +56,22 @@ export default function ArtistPage() {
                 const updated = liked ? [id, ...likedArtists] : likedArtists.filter((artistId) => artistId !== id);
                 const filtered = updated.filter((value, index, self) => self.indexOf(value) === index);
                 AsyncStorage.setItem('likedArtists', JSON.stringify(filtered));
+            }
+        });
+        Toast.show({
+            type: liked ? 'success' : 'info',
+            text1: liked ? `Followed '${name}'` : `Unfollowed '${name}'`,
+            text2: 'You can view liked artists in the following tab.',
+            text1Style: {fontSize: 16},
+            text2Style: {fontSize: 14},
+            position: 'top',
+            topOffset: 20,
+            visibilityTime: 2000,
+            autoHide: true,
+            props: {
+                style: {
+                    backgroundColor: Colors.theme.primary,
+                }
             }
         });
     }
@@ -105,11 +122,21 @@ export default function ArtistPage() {
         </ParallaxScrollView>
 
         <Pressable 
-                style={styles.floatingButton}
-                onPress={() => {
-                    onLikeChange(!liked)}}>
-                <Ionicons name={liked ? 'heart' : 'heart-outline'} size={30} color='white' />
-            </Pressable>
+            style={styles.floatingButton}
+            onPress={() => {
+                onLikeChange(!liked)}}>
+            <MaterialIcons name={liked ? 'favorite' : 'favorite-outline'} size={30} color='white' />
+        </Pressable>
+        <Toast config={{
+            success: (props) => (
+                <SuccessToast {...props} style={{ borderLeftColor: Colors.theme.primary }}/>
+            ),
+            info: (props) => {
+                return (
+                    <SuccessToast {...props} style={{ borderLeftColor: Colors.theme.secondary }}/>
+                )
+            }
+        }}/>
         </>
     )
 }
