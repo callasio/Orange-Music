@@ -1,6 +1,7 @@
 import { getArtist } from "@/api/artist";
 import { Colors } from "@/constants/Colors";
 import { openURL } from "expo-linking";
+import { useRouter } from "expo-router";
 import React from "react";
 import { useEffect, useState } from "react";
 
@@ -23,8 +24,28 @@ export default function ArtistFrame({
         fetchArtist();
     }, []);
 
+    const router = useRouter();
+
     return (
-        <View style={{ borderWidth: 1, borderColor: 'black', aspectRatio: 1, flexDirection: 'column', borderRadius: 10, backgroundColor: 'white', overflow: 'hidden' }}>
+        <Pressable style={{ 
+            borderWidth: 1, 
+            borderColor: 'black', 
+            aspectRatio: 1, 
+            flexDirection: 'column', 
+            borderRadius: 10, 
+            backgroundColor: 'white', 
+            overflow: 'hidden',
+        }}
+        onPress={() => {
+            router.push({
+                pathname: '/pages/artist',
+                params: {
+                    name,
+                    image: data?.images[0]?.url,
+                    id,
+                }
+            });
+        }}>
             <View style={{ aspectRatio: 1.3 }}>
                 {loading ?
                     <ActivityIndicator /> :
@@ -49,6 +70,6 @@ export default function ArtistFrame({
                     </>)
                 }
             </View>
-        </View>
+        </Pressable>
     )
 }
