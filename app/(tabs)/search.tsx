@@ -6,7 +6,7 @@ import Tag from '@/components/Tag';
 import { search, SearchResponse } from '@/api/search';
 import SearchResult from '@/components/SearchResult';
 import axios from 'axios';
-import { getSpotifyToken } from '@/api/token';
+import { getSpotifyToken } from '../../api/token';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CardElement, { ElementProps } from '@/components/CardElement';
 import { HISTORY_KEY } from '@/constants/Keys';
