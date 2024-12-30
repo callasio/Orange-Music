@@ -67,18 +67,19 @@ export default function UserPlaylist({ title, playlists, onPlaylistPress, loadin
 export const commonstyles = StyleSheet.create({
   container: {
     flex: 1, // Makes the container take up the full available space
-    padding: 10,
+    padding: 20,
     paddingTop:20,
     backgroundColor:back,
     
   },
   box: {
-    padding: 10, // Adds spacing inside the box
-    backgroundColor: box, // Sets the background color of the box to light gray
+    //padding: 10, // Adds spacing inside the box
+    backgroundColor: back, // Sets the background color of the box to light gray
     minHeight: 50, // Ensures the box has at least a height of 50 units
     //marginBottom: 10, // Adds spacing below each box
     marginTop: 10, // Adds spacing above each box
     borderRadius: 10,
+    paddingTop:10,
   },
   boxTitle: {
     fontSize: 20, // Sets the font size of the title text
@@ -86,14 +87,15 @@ export const commonstyles = StyleSheet.create({
     marginBottom: 15, // Adds spacing below the title
     textAlign: "left", // Aligns the text to the left
     color: text,
+    marginLeft:5,
   },
   scrollContainer: {
-    paddingHorizontal: 10, // Adds horizontal padding within the scrollable container
+    paddingHorizontal: 0, // Adds horizontal padding within the scrollable container
   },
   button: {
-    width: 140, // Sets the width of each button
+    width: 150, // Sets the width of each button
     height: 180, // Sets the height of each button
-    marginHorizontal: 15, // Adds spacing on the left and right of each button
+    marginHorizontal: 5, // Adds spacing on the left and right of each button
     alignItems: "center", // Aligns the button's content to the center horizontally
   },
   buttonImage: {
