@@ -1,3 +1,4 @@
+import { Colors } from '@/constants/Colors';
 import { Text, View, StyleSheet, Pressable } from 'react-native';
 
 interface TagProps {
@@ -13,19 +14,17 @@ export default function Tag({
 }: TagProps) {
     return (
         <Pressable style={{
-            backgroundColor: toggled ? 'black' : 'white',
-            paddingHorizontal: 10,
-            paddingVertical: 5,
+            backgroundColor: toggled ? Colors.theme.primary : Colors.theme.secondary,
+            paddingHorizontal: 12,
+            paddingVertical: 6,
             borderRadius: 100,
             alignItems: 'center',
             justifyContent: 'center',
-            borderColor: 'black',
-            borderWidth: 1,
         }} onPress={onClick}>
             <Text style={{
-                color: toggled ? 'white' : 'black',
+                color: toggled ? Colors.theme.background : Colors.theme.text,
                 fontSize: 13,
-            }}>{name}</Text>
+            }}>{name}s</Text>
         </Pressable>
     );
 }
