@@ -29,9 +29,9 @@ export const Colors = {
     white: '#FFFFFF',
   },
   theme: {
-    background: "#222831",
+    background: "#1A1A1A",
     primary: "#E16428",
-    secondary: "#393E46",
+    secondary: "#3A3A3A",
     text: "#EEEEEE"
   }
 };
