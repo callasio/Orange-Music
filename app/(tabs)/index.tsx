@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View, ActivityIndicator, Text, Pressable, FlatList } from "react-native";
 import { useRouter } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-// import DragList from "react-native-draglist";
+import DragList from "react-native-draglist";
 import UserPlaylist from "../../components/playlist/userplaylist";
 import { userSavedTrackMultipleUsers } from "../../api/userSavedTrack";
 import { commonstyles } from "../../components/playlist/userplaylist";
@@ -118,7 +118,7 @@ const App = () => {
 
   return (
     <View style={[commonstyles.container]}>
-      {/* <DragList
+      <DragList
         data={userOrder}
         renderItem={({ item: userId, onDragStart, onDragEnd }) => (
           <Pressable
@@ -142,18 +142,6 @@ const App = () => {
           updatedOrder.splice(toIndex, 0, movedItem);
           onReorder(updatedOrder);
         }}
-      /> */}
-      <FlatList
-        data={userOrder}
-        renderItem={({ item: userId }) => (
-          <UserPlaylist
-            title={userTitles[userId]}
-            playlists={playlistsByUser[userId]}
-            onPlaylistPress={(playlistId) => handleUserPlaylistPress(playlistId, userId)}
-            loading={false}
-          />
-        )}
-        keyExtractor={(item) => item}
       />
       <View style={{ height: 15 }} />
     </View>

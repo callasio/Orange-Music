@@ -3,8 +3,8 @@ import { Colors } from '@/constants/Colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { FlatList, Text } from 'react-native';
-// import DragList from 'react-native-draglist';
+import { FlatList, Text, View } from 'react-native';
+import DragList from 'react-native-draglist';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 export default function FollowingPage() {
@@ -33,19 +33,20 @@ export default function FollowingPage() {
 
     return (
         <SafeAreaProvider>
-            <SafeAreaView style={{ backgroundColor: Colors.theme.background }}>
-                {/* <DragList
-                    data={likedArtists}
-                    
-                    renderItem={({ item, onDragStart, onDragEnd }) => <
-                        ArtistFrame id={item} onDragStart={onDragStart} onDragEnd={onDragEnd}/>}
-                    keyExtractor={(item) => `following${item}`}
-                    onReordered={onReordered}
-                /> */}
-                <FlatList
-                    data={likedArtists}
-                    renderItem={({ item }) => <Text>{item}</Text>}
-                    keyExtractor={(item) => `following${item}`} />
+            <SafeAreaView style={{ backgroundColor: Colors.theme.background, height: '100%' }}>
+                {likedArtists.length === 0 ? 
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={{ color: "#BBB", textAlign: 'center', marginTop: 20 }}>You haven't followed any artists yet!</Text>
+                </View>
+                :
+                <DragList
+                data={likedArtists}
+                
+                renderItem={({ item, onDragStart, onDragEnd }) => <
+                    ArtistFrame id={item} onDragStart={onDragStart} onDragEnd={onDragEnd}/>}
+                keyExtractor={(item) => `following${item}`}
+                onReordered={onReordered}
+            />}
             </SafeAreaView>
         </SafeAreaProvider>);
 }
