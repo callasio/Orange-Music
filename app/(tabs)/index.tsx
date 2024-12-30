@@ -6,6 +6,10 @@ import DragList from "react-native-draglist";
 import UserPlaylist from "../../components/playlist/userplaylist";
 import { userSavedTrackMultipleUsers } from "../../api/userSavedTrack";
 import { commonstyles } from "../../components/playlist/userplaylist";
+import { Colors } from "@/constants/Colors";
+
+const back = Colors.theme.background;
+const line = Colors.theme.primary;
 
 const App = () => {
   const router = useRouter();
