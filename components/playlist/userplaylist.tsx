@@ -58,7 +58,7 @@ export default function UserPlaylist({ title, playlists, onPlaylistPress, loadin
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={commonstyles.scrollContainer}
-        ItemSeparatorComponent={() => <View style={commonstyles.separator} />}
+        //ItemSeparatorComponent={() => <View style={commonstyles.separator} />}
       />
     </View>
   );
