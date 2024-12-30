@@ -32,10 +32,7 @@ export default function TrackPage() {
       <Image
         source={{ uri: image as string }}
         style={{ width: '100%', height: '100%' }} />
-    } headerBackgroundColor={{
-      dark: '',
-      light: ''
-    }}>
+    } >
       <Button title="Show in Spotify" 
         color={Colors.spotify.green}
         onPress={() => {

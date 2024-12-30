@@ -53,7 +53,7 @@ export default function AlbumlistPage() {
             source={{uri: image as string}}
             style={{width: '100%', height: '100%'}}
         />
-    } headerBackgroundColor={{dark: '', light: ''}}>
+    }>
         <View style={styles.screen}>
             <FlatList
                     data={albumlistData}
