@@ -58,12 +58,6 @@ export default function ArtistFrame({
                     (<>
                         <Text style={{ fontSize: 18, fontWeight: 'bold', color: Colors.theme.text }}>{name}</Text>
                         <Text style={{ color: '#BBB' }}>{`${data!.followers.total} followers`}</Text>
-                        <Pressable onPress={() => {
-                            const url = `https://open.spotify.com/artist/${id}`;
-                            openURL(url);
-                        }}>
-                            <Text style={{ color: Colors.theme.primary }}>Show in Spotify</Text>
-                        </Pressable>
                     </>)
                 }
             </View>
