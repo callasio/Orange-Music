@@ -128,7 +128,7 @@ const App = () => {
             style={{ marginBottom: 10 }}
           >
             <UserPlaylist
-              title={userTitles[userId] || `Playlists for User ${userId}`}
+              title={userTitles[userId]}
               playlists={playlistsByUser[userId]}
               onPlaylistPress={(playlistId) => handleUserPlaylistPress(playlistId, userId)}
               loading={false}
