@@ -1,108 +1,147 @@
-import React from "react";
-import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
-import { useRouter } from "expo-router"; // `expo-router`에서 제공하는 `useRouter` 훅을 가져옴
+import React, { useEffect, useState } from "react";
+import { View, ActivityIndicator, Text, Pressable } from "react-native";
+import { useRouter } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import DragList from "react-native-draglist";
+import UserPlaylist from "../../components/playlist/userplaylist";
+import { userSavedTrackMultipleUsers } from "../../api/userSavedTrack";
+import { commonstyles } from "../../components/playlist/userplaylist";
 
 const App = () => {
-  const router = useRouter(); // 페이지 전환을 위한 `useRouter` 훅 사용
+  const router = useRouter();
+  const [playlistsByUser, setPlaylistsByUser] = useState<Record<string, any[]>>({});
+  const [userOrder, setUserOrder] = useState<string[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // 버튼 데이터: 각 버튼에 표시할 이미지, 이름, 그리고 관련 플레이리스트 ID
-  const buttons = [
-    {
-      name: "ROSIE - ROSÉ", // 버튼 이름
-      image: "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000d72cac50b6f9aec13ee1d370465f", // 이미지 URL
-      playlistId: "779iLhzoPQSF3Vb9AuiFTZ", // Spotify 플레이리스트 ID
-    },
-    {
-      name: "BTS Playlist 2013-2024",
-      image: "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000d72ccccae3724b784630e6223071",
-      playlistId: "0e1CZktKWxzUtZXpKO8Gza",
-    },
-    {
-      name: "The Beatles All Songs",
-      image: "https://mosaic.scdn.co/640/ab67616d00001e0255612ece447bec5d62c68375ab67616d00001e02608a63ad5b18e99da94a3f73ab67616d00001e02dbeec63ad914c973e75c24dfab67616d00001e02e230f303815e82a86713eedd",
-      playlistId: "6ZmqDRJKJf3v3LzYZAaGGU",
-    },
-    {
-      name: "taylor swift autumn",
-      image: "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da84d832b4cb718ffa65d03eb336",
-      playlistId: "2pUNSCOOr9lVzyMIIXO1eG",
-    },
-    {
-      name: "Christmas Vibes 2024 🎄",
-      image: "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da84c6e78728dfd60fa95a883b86",
-      playlistId: "583cSUdsldtNLlMl4Me1Ux",
-    },
-    {
-      name: "jazzy & groovy vibes",
-      image: "https://image-cdn-ak.spotifycdn.com/image/ab67706c0000da848191d59af119167ed25e1736",
-      playlistId: "7DPSUXq6oVgBFdwiHYeL4y",
-    },
+  // User IDs and their custom titles
+  const user_ids = [
+    "31dg76iibcgdmeo2pbdmg2wha5cu",
+    "31sjl6f6zhs2cyrebstrjo7m5xgu",
+    "ty5kkq44cnlzzvtwwob36mx4g",
+    "kerrryk",
+    "4n0ohrxqy5e1qymzr391vokkm",
   ];
 
+  const userTitles: Record<string, string> = {
+    "31dg76iibcgdmeo2pbdmg2wha5cu": "바게트빵's Playlists",
+    "31sjl6f6zhs2cyrebstrjo7m5xgu": "SI_NU's Playlists",
+    "ty5kkq44cnlzzvtwwob36mx4g": "Topsify Radio's Playlists",
+    "kerrryk": "Keri's Playlists",
+    "4n0ohrxqy5e1qymzr391vokkm": "설빈's Playlists",
+  };
 
-  // 버튼 클릭 시 호출되는 함수
-  const handlePress = (playlistId: string) => {
-    // `playlistId`를 기준으로 해당 버튼의 데이터를 찾음
-    const buttonData = buttons.find((data) => data.playlistId === playlistId);
-    // 페이지 전환: `/pages/playlist`로 이동하면서 데이터 전달
+  // Fetch playlists and user order
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Fetch playlists grouped by user ID
+        const playlists = await userSavedTrackMultipleUsers(user_ids);
+        const groupedPlaylists = user_ids.reduce((acc, userId) => {
+          acc[userId] = playlists.filter((playlist) => playlist.user === userId) || [];
+          return acc;
+        }, {} as Record<string, any[]>);
+
+        setPlaylistsByUser(groupedPlaylists);
+        console.log("Grouped Playlists by User:", groupedPlaylists);
+
+        // Retrieve or initialize user order
+        const savedOrder = await AsyncStorage.getItem("userOrder");
+        if (savedOrder) {
+          const parsedOrder = JSON.parse(savedOrder);
+          if (Array.isArray(parsedOrder)) {
+            setUserOrder(parsedOrder);
+          } else {
+            throw new Error("Invalid saved order format");
+          }
+        } else {
+          setUserOrder(user_ids);
+        }
+      } catch (error) {
+        console.error("Error fetching playlists or initializing order:", error);
+        setUserOrder(user_ids); // Fallback to default order
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  // Handle playlist press
+  const handleUserPlaylistPress = (playlistId: string, userId: string) => {
+    const playlistData = playlistsByUser[userId]?.find((data) => data.id === playlistId);
+    if (!playlistData) {
+      console.error("Playlist not found for ID:", playlistId);
+      return;
+    }
     router.push({
-      pathname: "/pages/playlist", // 이동할 경로
-      params: { 
-        name: buttonData?.name, // 플레이리스트 이름
-        id: playlistId, // 플레이리스트 ID
-        artist: "", // (현재는 빈 문자열, 필요 시 추가 가능)
-        image: buttonData?.image, // 플레이리스트 이미지
-      }, 
+      pathname: "/pages/playlist",
+      params: {
+        name: playlistData.name,
+        id: playlistData.id,
+        artist: "",
+        image: playlistData.image,
+      },
     });
   };
 
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Playlist</Text> 
-      <View style={styles.buttonContainer}>
-        {buttons.map((button, index) => (
-          <TouchableOpacity
-            key={index} // 고유 키 값 (필수)
-            style={styles.button} // 버튼 스타일
-            onPress={() => handlePress(button.playlistId)} // 버튼 클릭 시 handlePress 호출
-          >
-            <Image source={{ uri: button.image }} style={styles.buttonImage} />
-          </TouchableOpacity>
-        ))}
+  // Handle reordering and save to AsyncStorage
+  const onReorder = async (data: string[]) => {
+    setUserOrder(data);
+    try {
+      await AsyncStorage.setItem("userOrder", JSON.stringify(data));
+    } catch (error) {
+      console.error("Error saving order to AsyncStorage:", error);
+    }
+  };
+
+  if (loading) {
+    return (
+      <View style={[commonstyles.container, { justifyContent: "center", alignItems: "center" }]}>
+        <ActivityIndicator size="large" color="#1DB954" />
       </View>
+    );
+  }
+
+  if (!userOrder.length || Object.values(playlistsByUser).every((list) => list.length === 0)) {
+    console.warn("No playlists or userOrder available.");
+    return (
+      <View style={[commonstyles.container, { justifyContent: "center", alignItems: "center" }]}>
+        <Text style={{ fontSize: 18, color: "#666" }}>No playlists available</Text>
+      </View>
+    );
+  }
+
+  return (
+    <View style={[commonstyles.container]}>
+      <DragList
+        data={userOrder}
+        renderItem={({ item: userId, onDragStart, onDragEnd }) => (
+          <Pressable
+            key={userId}
+            onLongPress={onDragStart}
+            onPressOut={onDragEnd}
+            style={{ marginBottom: 10 }}
+          >
+            <UserPlaylist
+              title={userTitles[userId] || `Playlists for User ${userId}`}
+              playlists={playlistsByUser[userId]}
+              onPlaylistPress={(playlistId) => handleUserPlaylistPress(playlistId, userId)}
+              loading={false}
+            />
+          </Pressable>
+        )}
+        keyExtractor={(item) => item}
+        onReordered={(fromIndex: number, toIndex: number) => {
+          const updatedOrder = [...userOrder];
+          const [movedItem] = updatedOrder.splice(fromIndex, 1);
+          updatedOrder.splice(toIndex, 0, movedItem);
+          onReorder(updatedOrder);
+        }}
+      />
+      <View style={{ height: 15 }} />
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1, // 화면을 꽉 채움
-    alignItems: "center", // 가로 방향 중앙 정렬
-    paddingTop: 50, // 화면 상단 여백
-  },
-  title: {
-    fontSize: 30, // 글씨 크기
-    fontWeight: "bold", // 글씨 굵게
-    textAlign: "center", // 텍스트 중앙 정렬
-    marginBottom: 60, // 하단 여백
-  },
-  buttonContainer: {
-    flexDirection: "row", // 버튼들을 가로로 정렬
-    flexWrap: "wrap", // 버튼이 줄을 넘어가면 자동으로 다음 줄로 이동
-    justifyContent: "center", // 버튼들을 중앙 정렬
-  },
-  button: {
-    width: 150, // 버튼의 너비
-    height: 150, // 버튼의 높이
-    borderRadius: 10, // 둥근 모서리
-    overflow: "hidden", // 버튼 경계 밖의 내용을 숨김
-    margin: 15, // 버튼 간격
-  },
-  buttonImage: {
-    width: "100%", // 버튼 내부 이미지를 버튼 크기에 맞게 설정
-    height: "100%",
-    resizeMode: "cover", // 이미지 비율 유지하며 버튼 크기에 맞춤
-  },
-});
 
 export default App;

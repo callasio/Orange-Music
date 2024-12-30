@@ -38,32 +38,56 @@ export default function RootLayout() {
           name="pages/track"
           options={({ route }) => {
             const { name, artist, image, id } = route.params as ItemInfo;
+
             return ({
               headerTitle: name,
+              headerTitleStyle:{
+                fontSize:22,
+                fontWeight:'bold',
+              },
           })}}
         />
         <Stack.Screen
           name="pages/artist"
           options={({ route }) => {
             const { name, artist, image, id } = route.params as ItemInfo;
+
+            
             return ({
               headerTitle: name,
+              headerTitleStyle:{
+                fontSize:22,
+                fontWeight:'bold',
+              },
           })}}
         />
         <Stack.Screen
           name="pages/playlist"
           options={({ route }) => {
             const { name, artist, image, id } = route.params as ItemInfo;
+
+            
             return ({
               headerTitle: name,
+              headerTitleStyle:{
+                fontSize:22,
+                fontWeight:'bold',
+              },
           })}}
         />
         <Stack.Screen
           name="pages/album"
           options={({ route }) => {
             const { name, artist, image, id } = route.params as ItemInfo;
+
+            
+
             return ({
               headerTitle: name,
+              headerTitleStyle:{
+                fontSize:22,
+                fontWeight:'bold',
+              },
           })}}
         />
         <Stack.Screen name="+not-found" />

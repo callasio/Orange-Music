@@ -41,7 +41,7 @@ export default function Element({
       }
       style={({ pressed }) => [styles.playlistItem, { backgroundColor: pressed ? "#f0f0f0" : "#ffffff" }]}>
         <Image source={{ uri: item.image }} style={styles.playlistImage} />
-        <View>
+        <View style={{ flex: 1}}>
             <Text style={styles.songName}>{item.name}</Text>
             {item.artist && <Text style={styles.artistName}>{(
               isHistory ? `${type.charAt(0).toUpperCase() + type.slice(1)} \u00B7 ` : ""
@@ -66,13 +66,17 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 5,
     marginRight: 10,
+    alignSelf:"center",
   },
   songName: {
     fontSize: 16,
     fontWeight: "bold",
+    flexWrap: "wrap",
+    marginBottom: 2,
   },
   artistName: {
     fontSize: 14,
     color: "#666",
+    flexWrap: "wrap",
   }
 });
