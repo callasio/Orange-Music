@@ -3,7 +3,8 @@ import { View, Text, FlatList, Image, StyleSheet, TouchableOpacity, ActivityIndi
 import { Colors } from "@/constants/Colors";
 
 const back = Colors.theme.background;
-const line = Colors.theme.primary;
+const text = Colors.theme.text;
+const box=Colors.theme.secondary;
 
 
 interface Playlist {
@@ -42,7 +43,7 @@ export default function UserPlaylist({ title, playlists, onPlaylistPress, loadin
     return (
       <View style={commonstyles.box}>
         <Text style={commonstyles.boxTitle}>{title}</Text>
-        <Text style={{ textAlign: "center", color: "#666" }}>No playlists available</Text>
+        <Text style={{ textAlign: "center", color: text }}>No playlists available</Text>
       </View>
     );
   }
@@ -67,10 +68,12 @@ export const commonstyles = StyleSheet.create({
   container: {
     flex: 1, // Makes the container take up the full available space
     paddingTop: 20, // Adds spacing at the top of the container
+    backgroundColor:back,
+    
   },
   box: {
     padding: 15, // Adds spacing inside the box
-    backgroundColor: "#f9f9f9", // Sets the background color of the box to light gray
+    backgroundColor: box, // Sets the background color of the box to light gray
     minHeight: 50, // Ensures the box has at least a height of 50 units
     marginBottom: 10, // Adds spacing below each box
   },
@@ -79,6 +82,7 @@ export const commonstyles = StyleSheet.create({
     fontWeight: "bold", // Makes the title text bold
     marginBottom: 15, // Adds spacing below the title
     textAlign: "left", // Aligns the text to the left
+    color: text,
   },
   scrollContainer: {
     paddingHorizontal: 10, // Adds horizontal padding within the scrollable container
@@ -97,13 +101,14 @@ export const commonstyles = StyleSheet.create({
   },
   buttonText: {
     marginTop: 10, // Adds spacing above the text
-    fontSize: 16, // Sets the font size of the button text
+    fontSize: 12, // Sets the font size of the button text
     fontWeight: "bold", // Makes the button text bold
-    textAlign: "center", // Aligns the text to the center horizontally
+    textAlign: "left", // Aligns the text to the center horizontally
+    color:text,
   },
   separator: {
     width: 1, // Width of the separator line
-    backgroundColor: "#ccc", // Color of the separator
+    backgroundColor: text, // Color of the separator
     height: "900%", // Adjust height of the line
     alignSelf: "center", // Centers the separator vertically
   },
