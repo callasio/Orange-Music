@@ -7,6 +7,7 @@ import UserPlaylist from "../../components/playlist/userplaylist";
 import { userSavedTrackMultipleUsers } from "../../api/userSavedTrack";
 import { commonstyles } from "../../components/playlist/userplaylist";
 import { Colors } from "@/constants/Colors";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 const back = Colors.theme.background;
 const line = Colors.theme.primary;

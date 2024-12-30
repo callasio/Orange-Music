@@ -61,8 +61,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     padding: 10,
     backgroundColor: Colors.theme.secondary,
-    borderBottomWidth: 2,
-    borderBottomColor: Colors.theme.background,
+    //borderBottomWidth: 2,
+    //borderBottomColor: Colors.theme.background,
+    marginBottom:8,
+    borderRadius: 10,
   },
   
   playlistImage: {

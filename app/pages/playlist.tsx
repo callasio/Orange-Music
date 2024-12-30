@@ -3,6 +3,7 @@ import { ActivityIndicator, FlatList, Text, View, Image, StyleSheet } from "reac
 import { Route, useLocalSearchParams } from "expo-router";
 import { playlist } from "../../api/playlist"; // Spotify API 호출 함수
 import CardElement, { ItemInfo } from "@/components/CardElement";
+import { Colors } from "@/constants/Colors";
 
 export default function PlaylistPage() {
   const {id} = useLocalSearchParams<Route & ItemInfo>();
@@ -62,36 +63,39 @@ export default function PlaylistPage() {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: "#fff",
     paddingTop: 20,
+    padding:10,
+    backgroundColor:Colors.theme.background,
   },
   title: {
     fontSize: 20,
     fontWeight: "bold",
     textAlign: "center",
+    color:Colors.theme.text,
     marginBottom: 10,
   },
-  trackContainer: {
-    flexDirection: "row",
-    padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "#ddd",
-  },
-  trackImage: {
-    width: 50,
-    height: 50,
-    borderRadius: 5,
-    marginRight: 10,
-  },
-  trackInfo: {
-    justifyContent: "center",
-  },
-  trackName: {
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  trackArtist: {
-    fontSize: 14,
-    color: "#666",
-  },
+  // trackContainer: {
+  //   flexDirection: "row",
+  //   padding: 10,
+  //   borderBottomWidth: 1,
+  //   borderBottomColor: "#ddd",
+    
+  // },
+  // trackImage: {
+  //   width: 50,
+  //   height: 50,
+  //   borderRadius: 5,
+  //   marginRight: 10,
+  // },
+  // trackInfo: {
+  //   justifyContent: "center",
+  // },
+  // trackName: {
+  //   fontSize: 16,
+  //   fontWeight: "bold",
+  // },
+  // trackArtist: {
+  //   fontSize: 14,
+  //   color: "#666",
+  // },
 });

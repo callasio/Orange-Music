@@ -67,15 +67,18 @@ export default function UserPlaylist({ title, playlists, onPlaylistPress, loadin
 export const commonstyles = StyleSheet.create({
   container: {
     flex: 1, // Makes the container take up the full available space
-    paddingTop: 20, // Adds spacing at the top of the container
+    padding: 10,
+    paddingTop:20,
     backgroundColor:back,
     
   },
   box: {
-    padding: 15, // Adds spacing inside the box
+    padding: 10, // Adds spacing inside the box
     backgroundColor: box, // Sets the background color of the box to light gray
     minHeight: 50, // Ensures the box has at least a height of 50 units
-    marginBottom: 10, // Adds spacing below each box
+    //marginBottom: 10, // Adds spacing below each box
+    marginTop: 10, // Adds spacing above each box
+    borderRadius: 10,
   },
   boxTitle: {
     fontSize: 20, // Sets the font size of the title text
@@ -107,7 +110,7 @@ export const commonstyles = StyleSheet.create({
     color:text,
   },
   separator: {
-    width: 1, // Width of the separator line
+    width: 0.5, // Width of the separator line
     backgroundColor: text, // Color of the separator
     height: "900%", // Adjust height of the line
     alignSelf: "center", // Centers the separator vertically
