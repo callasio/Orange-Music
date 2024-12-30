@@ -56,9 +56,9 @@ export default function ArtistFrame({
             onLongPress={onDragStart}
             onPressOut={onDragEnd}
             onPress={gotoArtist}
-            style={{ backgroundColor: Colors.theme.secondary, marginBottom: 10 }}>
+            style={{ backgroundColor: Colors.theme.background }}>
             {loading ? (
-                <ActivityIndicator/>
+                <ActivityIndicator size="large" color={Colors.theme.primary} />
             ) : (
                 <View style={styles.column}>
                     <View style={styles.header}>
@@ -75,18 +75,18 @@ export default function ArtistFrame({
                                 image: track.album.images[0].url,
                                 artist: track.artists[0].name,
                                 id: track.id,
-                            }} type={"track"} />
+                            }} type={"track"} margin={false}/>
                         ))}
                         <TouchableOpacity style={{ 
                             flexDirection: "row",
                             alignItems: "center",
                             justifyContent: "center",
                             padding: 10,
-                            backgroundColor:  Colors.theme.secondary,
+                            backgroundColor:  Colors.theme.primary,
                           }}
                           onPress={gotoArtist}>
                             <Text style={{
-                                color: Colors.theme.primary,
+                                color: Colors.theme.text,
                                 fontSize: 16,
                                 fontWeight: "bold",
                             }}>See more</Text>
@@ -116,5 +116,7 @@ const styles = StyleSheet.create({
     topTracks: {
         flexDirection: "column",
         marginTop: 10,
+        borderRadius: 10,
+        overflow: "hidden",
     }
 });

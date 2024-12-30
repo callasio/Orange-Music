@@ -8,7 +8,7 @@ import { Colors } from '@/constants/Colors';
 import { canOpenURL, openURL } from 'expo-linking';
 import { Route, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, Button, Image, Text, View } from 'react-native';
+import { ActivityIndicator, Button, Image, Text, TouchableOpacity, View } from 'react-native';
 
 export default function TrackPage() {
   const { name, artist, image, id } = useLocalSearchParams<Route & ItemInfo>();
@@ -33,16 +33,16 @@ export default function TrackPage() {
         source={{ uri: image as string }}
         style={{ width: '100%', height: '100%' }} />
     } >
-      <Button title="Show in Spotify" 
-        color={Colors.spotify.green}
-        onPress={() => {
+      
+      
+      <Button title="Show in Spotify" color={Colors.theme.primary} onPress={() => {
           const url= `https://open.spotify.com/track/${id}`;
           openURL(url);
       }} />
       <View style={{ backgroundColor: Colors.theme.background }}>
       {( loading ? 
       <View style={{ height: '100%', justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator/>
+        <ActivityIndicator size="large" color={Colors.theme.primary} />
       </View> :
       <View style={{ padding: 20, flexDirection: 'column', gap: 20 }}>
         {

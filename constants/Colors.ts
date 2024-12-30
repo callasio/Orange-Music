@@ -30,8 +30,8 @@ export const Colors = {
   },
   theme: {
     background: "#222831",
-    primary: "#76ABAE",
-    secondary: "#31363F",
+    primary: "#E16428",
+    secondary: "#393E46",
     text: "#EEEEEE"
   }
 };

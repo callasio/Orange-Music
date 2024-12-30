@@ -10,6 +10,7 @@ import Animated, {
 import { ThemedView } from '@/components/ThemedView';
 import { useBottomTabOverflow } from '@/components/ui/TabBarBackground';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { Colors } from '@/constants/Colors';
 
 const HEADER_HEIGHT = Dimensions.get('window').width;
 
@@ -61,7 +62,7 @@ export default function ParallaxScrollView({
           {headerImage}
           <Animated.View style={[styles.overlay, overlayAnimatedStyle]} />
         </Animated.View>
-        <ThemedView>
+        <ThemedView style={{ backgroundColor: Colors.theme.background }}>
           {children}
         </ThemedView>
       </Animated.ScrollView>

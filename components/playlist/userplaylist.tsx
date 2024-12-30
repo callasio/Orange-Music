@@ -34,7 +34,7 @@ export default function UserPlaylist({ title, playlists, onPlaylistPress, loadin
   if (loading) {
     return (
       <View style={[commonstyles.box, { justifyContent: "center", alignItems: "center" }]}>
-        <ActivityIndicator size="large" color="#1DB954" />
+        <ActivityIndicator size="large" color={Colors.theme.primary}  />
       </View>
     );
   }

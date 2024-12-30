@@ -91,11 +91,12 @@ export default function SearchScreen() {
               android_ripple={{ color: "rgba(128, 128, 128, 0.3)", borderless: true }}
               onPress={() => textInputRef.current?.focus()}
             >
-              <MaterialIcons style={{ flex: 0 }} name="search" size={24} color={Colors.theme.background} />
+              <MaterialIcons style={{ flex: 0 }} name="search" size={24} color={Colors.theme.text} />
               <TextInput
                 ref={textInputRef}
                 style={styles.input}
                 onChangeText={setQuery}
+                placeholderTextColor="rgba(255, 255, 255, 0.5)"
                 value={query}
                 placeholder="Search"
               />
@@ -122,7 +123,7 @@ export default function SearchScreen() {
             noQuery ? 
             (history.length === 0 ? (
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                  <Text style={{ textAlign: 'center', fontSize: 20 }}>Search for something!</Text>
+                  <Text style={{ textAlign: 'center', fontSize: 20, color: "#BBB" }}>Search for something!</Text>
                 </View>
             ) : (
               <View style={{ flexDirection: "column", flex: 1 }}>
@@ -146,7 +147,7 @@ export default function SearchScreen() {
             )) :
             loading ? (
               <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <ActivityIndicator style={{ height: 'auto' }} size="large" color="#1DB954" />
+                <ActivityIndicator style={{ height: 'auto' }} size="large" color={Colors.theme.primary}  />
               </View>
             ) : (
               <SearchResult data={data!} type={dataType} onEndReached={
@@ -184,6 +185,7 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 40,
     borderWidth: 0,
-    color: Colors.theme.background,
+    fontWeight: 'bold',
+    color: Colors.theme.text,
   },
 });

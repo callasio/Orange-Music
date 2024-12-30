@@ -45,7 +45,7 @@ export default function ArtistFrame({
         }}>
             <View style={{ aspectRatio: 1.3 }}>
                 {loading ?
-                    <ActivityIndicator /> :
+                    <ActivityIndicator size="large" color={Colors.theme.primary} /> :
                     <Image
                         source={{ uri: data!.images[0]?.url || "https://via.placeholder.com/150" }}
                         style={{ width: '100%', height: '100%' }}
@@ -54,7 +54,7 @@ export default function ArtistFrame({
             </View>
             <View style={{ height: '100%', padding: 10, flexDirection: 'column', backgroundColor: Colors.theme.secondary }}>
                 {loading ?
-                    <ActivityIndicator /> :
+                    <ActivityIndicator size="large" color={Colors.theme.primary} /> :
                     (<>
                         <Text style={{ fontSize: 18, fontWeight: 'bold', color: Colors.theme.text }}>{name}</Text>
                         <Text style={{ color: '#BBB' }}>{`${data!.followers.total} followers`}</Text>
@@ -62,7 +62,7 @@ export default function ArtistFrame({
                             const url = `https://open.spotify.com/artist/${id}`;
                             openURL(url);
                         }}>
-                            <Text style={{ color: Colors.spotify.green }}>Show in Spotify</Text>
+                            <Text style={{ color: Colors.theme.primary }}>Show in Spotify</Text>
                         </Pressable>
                     </>)
                 }

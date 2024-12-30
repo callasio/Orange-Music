@@ -10,7 +10,7 @@ import { openURL } from 'expo-linking';
 import { Route, useLocalSearchParams } from 'expo-router';
 import React from 'react';
 import { useEffect, useState } from 'react';
-import { Button, Image, Pressable, FlatList, View, StyleSheet, Text, ActivityIndicator } from 'react-native';
+import { Button, Image, Pressable, FlatList, View, StyleSheet, Text, ActivityIndicator, Touchable, TouchableOpacity } from 'react-native';
 
 
 export default function ArtistPage() {
@@ -70,16 +70,14 @@ export default function ArtistPage() {
                     />
                 </View>
             }>
-            <Button title="Show in Spotify" 
-            color={Colors.spotify.green}
-            onPress={() => {
+            <Button title="Show in Spotify" color={Colors.theme.primary} onPress={() => {
                 const url= `https://open.spotify.com/artist/${id}`;
                 openURL(url);
             }} />
             <View style={{backgroundColor: Colors.theme.background}}>
             {loading ?
             <View style={{height: "100%", justifyContent: 'center'}}>
-                <ActivityIndicator/>
+                <ActivityIndicator size="large" color={Colors.theme.primary} />
             </View>:
             <>
             {artistData.items.length > 0 && <Text style={{
@@ -110,7 +108,7 @@ export default function ArtistPage() {
                 style={styles.floatingButton}
                 onPress={() => {
                     onLikeChange(!liked)}}>
-                <Ionicons name={liked ? 'heart' : 'heart-outline'} size={30} color={Colors.spotify.white} />
+                <Ionicons name={liked ? 'heart' : 'heart-outline'} size={30} color='white' />
             </Pressable>
         </>
     )
@@ -122,7 +120,7 @@ const styles = StyleSheet.create({
       bottom: 20, // Distance from the bottom
       right: 20, // Distance from the right
       zIndex: 10,
-      backgroundColor: Colors.spotify.green,
+      backgroundColor: Colors.theme.primary,
       width: 60,
       height: 60,
       borderRadius: 30, // Circular button
