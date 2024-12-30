@@ -76,6 +76,7 @@ export default function ArtistPage() {
                 const url= `https://open.spotify.com/artist/${id}`;
                 openURL(url);
             }} />
+            <View style={{backgroundColor: Colors.theme.background}}>
             {loading ?
             <View style={{height: "100%", justifyContent: 'center'}}>
                 <ActivityIndicator/>
@@ -84,6 +85,7 @@ export default function ArtistPage() {
             {artistData.items.length > 0 && <Text style={{
                 fontSize: 20,
                 fontWeight: 'bold',
+                color: Colors.theme.text,
                 margin: 20,
                 marginBottom: 0,
             }}>{`Albums`}</Text>}
@@ -101,6 +103,7 @@ export default function ArtistPage() {
                 }} type='album' />
             )}          
             /></>}
+            </View>
         </ParallaxScrollView>
 
         <Pressable 

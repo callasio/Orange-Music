@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { View, Text, Image, TouchableOpacity, Pressable, ActivityIndicator, StyleSheet } from "react-native";
 import CardElement from "../CardElement";
 import { useRouter } from "expo-router";
+import { Colors } from "@/constants/Colors";
 
 export default function ArtistFrame({
     id,
@@ -51,11 +52,11 @@ export default function ArtistFrame({
     }
 
     return (
-        <Pressable
+        <TouchableOpacity
             onLongPress={onDragStart}
             onPressOut={onDragEnd}
             onPress={gotoArtist}
-            style={({ pressed }) => [{ backgroundColor: pressed ? "#f0f0f0" : "#ffffff", marginBottom: 10 }]}>
+            style={{ backgroundColor: Colors.theme.secondary, marginBottom: 10 }}>
             {loading ? (
                 <ActivityIndicator/>
             ) : (
@@ -76,24 +77,24 @@ export default function ArtistFrame({
                                 id: track.id,
                             }} type={"track"} />
                         ))}
-                        <Pressable style={({ pressed }) => [{ 
+                        <TouchableOpacity style={{ 
                             flexDirection: "row",
                             alignItems: "center",
                             justifyContent: "center",
                             padding: 10,
-                            backgroundColor:  pressed ? "#f0f0f0" : "#ffffff",
-                          }]}
+                            backgroundColor:  Colors.theme.secondary,
+                          }}
                           onPress={gotoArtist}>
                             <Text style={{
-                                color: "#007AFF",
+                                color: Colors.theme.primary,
                                 fontSize: 16,
                                 fontWeight: "bold",
                             }}>See more</Text>
-                        </Pressable>
+                        </TouchableOpacity>
                     </View>
                 </View>
             )}
-        </Pressable>
+        </TouchableOpacity>
     )
 }
 
@@ -110,6 +111,7 @@ const styles = StyleSheet.create({
     headerText: {
         fontSize: 20,
         fontWeight: "bold",
+        color: Colors.theme.text,
     },
     topTracks: {
         flexDirection: "column",

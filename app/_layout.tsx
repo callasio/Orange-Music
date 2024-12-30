@@ -8,6 +8,7 @@ import 'react-native-reanimated';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { ItemInfo } from '@/components/CardElement';
+import { Colors } from '@/constants/Colors';
 
 global.Buffer = require('buffer').Buffer;
 
@@ -40,9 +41,14 @@ export default function RootLayout() {
             const { name, artist, image, id } = route.params as ItemInfo;
 
             return ({
+              headerTintColor: Colors.theme.text,
+              headerStyle: {
+                backgroundColor: Colors.theme.background,
+              },
               headerTitle: name,
               headerTitleStyle:{
                 fontSize:22,
+                color: Colors.theme.text,
                 fontWeight:'bold',
               },
           })}}
@@ -54,9 +60,14 @@ export default function RootLayout() {
 
             
             return ({
+              headerTintColor: Colors.theme.text,
+              headerStyle: {
+                backgroundColor: Colors.theme.background,
+              },
               headerTitle: name,
               headerTitleStyle:{
                 fontSize:22,
+                color: Colors.theme.text,
                 fontWeight:'bold',
               },
           })}}
@@ -68,9 +79,14 @@ export default function RootLayout() {
 
             
             return ({
+              headerTintColor: Colors.theme.text,
+              headerStyle: {
+                backgroundColor: Colors.theme.background,
+              },
               headerTitle: name,
               headerTitleStyle:{
                 fontSize:22,
+                color: Colors.theme.text,
                 fontWeight:'bold',
               },
           })}}
@@ -83,9 +99,14 @@ export default function RootLayout() {
             
 
             return ({
+              headerTintColor: Colors.theme.text,
+              headerStyle: {
+                backgroundColor: Colors.theme.background,
+              },
               headerTitle: name,
               headerTitleStyle:{
                 fontSize:22,
+                color: Colors.theme.text,
                 fontWeight:'bold',
               },
           })}}

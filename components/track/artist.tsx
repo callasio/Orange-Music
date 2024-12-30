@@ -5,7 +5,7 @@ import { useRouter } from "expo-router";
 import React from "react";
 import { useEffect, useState } from "react";
 
-import { Image, View, Text, ActivityIndicator, Pressable } from 'react-native';
+import { Image, View, Text, ActivityIndicator, Pressable, TouchableOpacity } from 'react-native';
 
 export default function ArtistFrame({
     name,
@@ -27,13 +27,10 @@ export default function ArtistFrame({
     const router = useRouter();
 
     return (
-        <Pressable style={{ 
-            borderWidth: 1, 
-            borderColor: 'black', 
+        <TouchableOpacity style={{ 
             aspectRatio: 1, 
             flexDirection: 'column', 
-            borderRadius: 10, 
-            backgroundColor: 'white', 
+            borderRadius: 10,
             overflow: 'hidden',
         }}
         onPress={() => {
@@ -55,12 +52,12 @@ export default function ArtistFrame({
                     />
                 }
             </View>
-            <View style={{ height: '100%', padding: 10, flexDirection: 'column' }}>
+            <View style={{ height: '100%', padding: 10, flexDirection: 'column', backgroundColor: Colors.theme.secondary }}>
                 {loading ?
                     <ActivityIndicator /> :
                     (<>
-                        <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{name}</Text>
-                        <Text style={{ color: 'gray' }}>{`${data!.followers.total} followers`}</Text>
+                        <Text style={{ fontSize: 18, fontWeight: 'bold', color: Colors.theme.text }}>{name}</Text>
+                        <Text style={{ color: '#BBB' }}>{`${data!.followers.total} followers`}</Text>
                         <Pressable onPress={() => {
                             const url = `https://open.spotify.com/artist/${id}`;
                             openURL(url);
@@ -70,6 +67,6 @@ export default function ArtistFrame({
                     </>)
                 }
             </View>
-        </Pressable>
+        </TouchableOpacity>
     )
 }

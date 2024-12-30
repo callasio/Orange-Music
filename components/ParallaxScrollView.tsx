@@ -44,7 +44,7 @@ export default function ParallaxScrollView({
 
   const overlayAnimatedStyle = useAnimatedStyle(() => {
     return {
-      opacity: interpolate(scrollOffset.value, [0, HEADER_HEIGHT], [0, 0.5]),
+      opacity: interpolate(scrollOffset.value, [0, HEADER_HEIGHT], [0, 0.8]),
     };
   });
 
