@@ -24,7 +24,7 @@ KAIST 새내기과정학부
 
 ## APK 파일
 
-해당 Repository의 [Release](https://github.com/callasio/madcamp-week-1/releases/tag/1.0.0)에서 확인하실 수 있습니다.
+해당 Repository의 [Releases](https://github.com/callasio/madcamp-week-1/releases) 탭에서 확인하실 수 있습니다.
 
 
 ## 사용 예시
