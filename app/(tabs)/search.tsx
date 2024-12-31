@@ -166,6 +166,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     height: '100%',
     padding: 10,
+    paddingBottom: 0,
     gap: 10,
   },
   searchBox: {

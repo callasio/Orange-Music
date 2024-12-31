@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, FlatList, Text, View, Image, StyleSheet } from "react-native";
+import { ActivityIndicator, FlatList, Text, View, Image, StyleSheet, Button } from "react-native";
 import { Route, useLocalSearchParams } from "expo-router";
 import { playlist } from "../../api/playlist"; // Spotify API 호출 함수
 import CardElement, { ItemInfo } from "@/components/CardElement";
 import { Colors } from "@/constants/Colors";
+import ParallaxScrollView from "@/components/ParallaxScrollView";
+import { openURL } from "expo-linking";
 
 export default function PlaylistPage() {
-  const {id} = useLocalSearchParams<Route & ItemInfo>();
+  const {id, image} = useLocalSearchParams<Route & ItemInfo>();
   const [playlistName, setPlaylistName] = useState("");
   const [playlistData, setPlaylistData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -48,15 +50,30 @@ export default function PlaylistPage() {
   }
 
   return (
-    <View style={styles.screen}>
-      <FlatList
-        data={playlistData}
-        keyExtractor={(item, index) => `${item.id}+${index}`}
-        renderItem={({ item }) => (
-          <CardElement item={item} type="track" />
-        )}
-      />
-    </View>
+    <ParallaxScrollView headerImage={
+        <Image 
+            source={{uri: image as string}}
+            style={{width: '100%', height: '100%'}}
+        />
+    }>
+      <Button
+        title="Show in Spotify"
+        color={Colors.theme.primary}
+        onPress={() => {
+          const url = `https://open.spotify.com/playlist/${id}`;
+          openURL(url);
+        }}/>
+      <View style={styles.screen}>
+        <FlatList
+          data={playlistData}
+          scrollEnabled={false}
+          keyExtractor={(item, index) => `${item.id}+${index}`}
+          renderItem={({ item }) => (
+            <CardElement item={item} type="track" />
+          )}
+        />
+      </View>
+    </ParallaxScrollView>
   );
 }
 

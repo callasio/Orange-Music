@@ -117,7 +117,7 @@ const App = () => {
   }
 
   return (
-    <View style={[commonstyles.container]}>
+    <View style={[commonstyles.container, { paddingBottom: 0 }]}>
       <DragList
         data={userOrder}
         renderItem={({ item: userId, onDragStart, onDragEnd }) => (

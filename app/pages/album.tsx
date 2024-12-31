@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, FlatList, Text, View, Image, StyleSheet } from "react-native";
+import { ActivityIndicator, FlatList, Text, View, Image, StyleSheet, Button } from "react-native";
 import { Route, useLocalSearchParams } from "expo-router";
 import { album } from "../../api/album"; // Spotify API 호출 함수
 import CardElement, { ItemInfo } from "@/components/CardElement";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { Colors } from "@/constants/Colors";
+import { openURL } from "expo-linking";
 
 export default function AlbumlistPage() {
   const {name, artist, image, id} = useLocalSearchParams<Route & ItemInfo>();
@@ -55,6 +56,14 @@ export default function AlbumlistPage() {
             style={{width: '100%', height: '100%'}}
         />
     }>
+        <Button 
+            title="Show in Spotify"
+            color={Colors.theme.primary}
+            onPress={() => {
+                const url= `https://open.spotify.com/album/${id}`;
+                openURL(url);
+            }}
+        />
         <View style={styles.screen}>
             <FlatList
                     data={albumlistData}
