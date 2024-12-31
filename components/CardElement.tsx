@@ -1,7 +1,8 @@
 import { Colors } from "@/constants/Colors";
 import { HISTORY_KEY } from "@/constants/Keys";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useRouter } from "expo-router";
+import { useNavigation, usePathname, useRouter } from "expo-router";
+import { useEffect } from "react";
 import { StyleSheet, Text, View, Image, TouchableOpacity, Pressable } from "react-native";
 import Animated from "react-native-reanimated";
 
@@ -25,6 +26,7 @@ export default function Element({
     margin = true,
 }: ElementProps & { onHistoryUpdate?: () => void, isHistory?: boolean, margin?: boolean }) {
   const router = useRouter();
+  const currentPath = usePathname();
 
   return (
     <TouchableOpacity 
@@ -35,12 +37,21 @@ export default function Element({
             const validHistory = updatedHistory.filter((item, index) => updatedHistory.findIndex((value) => value.item.id === item.item.id) === index).slice(0, 49);
             AsyncStorage.setItem(HISTORY_KEY, JSON.stringify(validHistory)).then(onHistoryUpdate);
           });
-          router.push({
-            pathname: `/pages/${type}`,
-            params: { ...item },
-          });
-        }
-      }
+
+          const newPath: "/pages/artist" | "/pages/playlist" | "/pages/track" | "/pages/album"  = `/pages/${type}`;
+
+          if (currentPath !== newPath) {
+            router.push({
+              pathname: newPath,
+              params: { ...item },
+            })
+          } else {
+            router.replace({
+              pathname: newPath,
+              params: { ...item },
+            })
+          }
+      }}
       style={{...styles.playlistItem,
         marginBottom: margin ? 8 : 0,
         borderRadius: margin ? 10 : 0,
