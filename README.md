@@ -8,8 +8,9 @@
 
 ## 기술 스택
 
-- [React Native](https://reactnative.dev/)
 - [Expo](https://expo.dev/accounts/ryan-lee)
+  - [React Native](https://reactnative.dev/)
+  - [TypeScript](https://www.typescriptlang.org/)
 - [Android](https://www.android.com/)
 - [Spotify API](https://developer.spotify.com/documentation/web-api)
 
