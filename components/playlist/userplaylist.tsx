@@ -67,8 +67,7 @@ export default function UserPlaylist({ title, playlists, onPlaylistPress, loadin
 export const commonstyles = StyleSheet.create({
   container: {
     flex: 1, // Makes the container take up the full available space
-    padding: 20,
-    paddingTop:20,
+    padding: 10,
     backgroundColor:back,
     
   },
