@@ -48,7 +48,7 @@
 ## 사용 예시
 
 
-https://github.com/user-attachments/assets/c7603d61-cd6f-4c00-8049-4b5faaaff682
+https://github.com/user-attachments/assets/7e6d1146-1905-4602-abc3-60ec62f4c632
 
 https://github.com/user-attachments/assets/fb1aca14-c73f-4b93-9037-08e40f6e3a70
 
