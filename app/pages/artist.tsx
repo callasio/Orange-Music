@@ -11,6 +11,7 @@ import { Route, useLocalSearchParams } from 'expo-router';
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { Button, Image, Pressable, FlatList, View, StyleSheet, Text, ActivityIndicator, Touchable, TouchableOpacity } from 'react-native';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import Toast, { SuccessToast } from 'react-native-toast-message';
 
 
@@ -61,7 +62,7 @@ export default function ArtistPage() {
         Toast.show({
             type: liked ? 'success' : 'info',
             text1: liked ? `Followed '${name}'` : `Unfollowed '${name}'`,
-            text2: 'You can view liked artists in the following tab.',
+            text2: 'You can view followed artists in the following tab.',
             text1Style: {fontSize: 16},
             text2Style: {fontSize: 14},
             position: 'top',
@@ -77,7 +78,13 @@ export default function ArtistPage() {
     }
 
     return (
-        <>
+        <SafeAreaProvider>
+        <SafeAreaView style={{ 
+            backgroundColor: Colors.theme.background,
+            flex: 1,
+            justifyContent: 'flex-end',
+            alignItems: 'flex-end',
+        }}>
         <ParallaxScrollView
             headerImage={
                 <View>
@@ -120,7 +127,6 @@ export default function ArtistPage() {
             /></>}
             </View>
         </ParallaxScrollView>
-
         <Pressable 
             style={styles.floatingButton}
             onPress={() => {
@@ -137,15 +143,14 @@ export default function ArtistPage() {
                 )
             }
         }}/>
-        </>
+        </SafeAreaView></SafeAreaProvider>
     )
 }
 
 const styles = StyleSheet.create({
     floatingButton: {
-      position: 'absolute',
-      bottom: 20, // Distance from the bottom
-      right: 20, // Distance from the right
+      marginTop: -60,
+      transform: [{translateY: -20}, {translateX: -20}],
       zIndex: 10,
       backgroundColor: Colors.theme.primary,
       width: 60,
