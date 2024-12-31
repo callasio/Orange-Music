@@ -10,26 +10,77 @@ import { Colors } from "@/constants/Colors";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { MaterialIcons } from "@expo/vector-icons";
 import { openURL } from "expo-linking";
+import { getUser } from "@/api/user";
 
 const back = Colors.theme.background;
 const line = Colors.theme.primary;
 
+const userIdAsset = [
+  "31sjl6f6zhs2cyrebstrjo7m5xgu",
+  "ty5kkq44cnlzzvtwwob36mx4g",
+  "kerrryk",
+  "4n0ohrxqy5e1qymzr391vokkm",
+];
+
 const App = () => {
   const router = useRouter();
   const [playlistsByUser, setPlaylistsByUser] = useState<Record<string, any[]>>({});
-  const [userOrder, setUserOrder] = useState<string[]>([]);
+  const [idLoading, setIdLoading] = useState(true);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [modalUrl, setModalUrl] = useState('');
 
   // User IDs and their custom titles
-  const [user_ids, setUser_ids] = useState([
-    "31dg76iibcgdmeo2pbdmg2wha5cu",
-    "31sjl6f6zhs2cyrebstrjo7m5xgu",
-    "ty5kkq44cnlzzvtwwob36mx4g",
-    "kerrryk",
-    "4n0ohrxqy5e1qymzr391vokkm",
-  ]);
+  const [user_ids, setUser_ids] = useState<string[]>([]);
+
+  const checkFirstRun = async () => {
+    const firstRun = await AsyncStorage.getItem("check_first");
+    if (!firstRun) {
+      await AsyncStorage.setItem("check_first", "1");
+      await AsyncStorage.setItem("userIds", JSON.stringify(userIdAsset));
+    }
+  }
+
+  const fetchUserIds = async () => {
+    await checkFirstRun();
+    const ids = await AsyncStorage.getItem("userIds");
+    setUser_ids(JSON.parse(ids!));
+    setIdLoading(false);
+  }
+
+  useEffect(() => {
+    fetchUserIds();
+  }, [])
+
+  const updateUserIds = async () => {
+    await AsyncStorage.setItem("userIds", JSON.stringify(user_ids));
+  }
+
+  useEffect(() => {
+    if (user_ids.length > 0)
+      updateUserIds();
+  }, [user_ids])
+
+  const [userNames, setUserNames] = useState<Record<string, string>>({
+  });
+
+  const fetchUserNames = async () => {
+    const names = user_ids.map(async (userId) => {
+      const data = await getUser({ id: userId });
+      return data.display_name;
+    } )
+
+    const resolvedNames = await Promise.all(names);
+    const namesRecord = user_ids.reduce((acc, userId, index) => {
+      acc[userId] = resolvedNames[index];
+      return acc;
+    }, {} as Record<string, string>);
+    setUserNames(namesRecord);
+  };
+
+  useEffect(() => {
+    fetchUserNames();
+  }, [user_ids]);
 
   const addUser = (url: string) => {
     const lastUrl = url.split("/").pop();
@@ -52,24 +103,11 @@ const App = () => {
         }, {} as Record<string, any[]>);
 
         setPlaylistsByUser(groupedPlaylists);
-
-        // Retrieve or initialize user order
-        const savedOrder = await AsyncStorage.getItem("userOrder");
-        if (savedOrder) {
-          const parsedOrder = JSON.parse(savedOrder);
-          if (Array.isArray(parsedOrder)) {
-            setUserOrder(parsedOrder);
-          } else {
-            throw new Error("Invalid saved order format");
-          }
-        } else {
-          setUserOrder(user_ids);
-        }
       } catch (error) {
         console.error("Error fetching playlists or initializing order:", error);
-        setUserOrder(user_ids); // Fallback to default order
       } finally {
-        setLoading(false);
+        if (!idLoading)
+          setLoading(false);
       }
     };
 
@@ -94,17 +132,7 @@ const App = () => {
     });
   };
 
-  // Handle reordering and save to AsyncStorage
-  const onReorder = async (data: string[]) => {
-    setUserOrder(data);
-    try {
-      await AsyncStorage.setItem("userOrder", JSON.stringify(data));
-    } catch (error) {
-      console.error("Error saving order to AsyncStorage:", error);
-    }
-  };
-
-  if (loading) {
+  if (loading || idLoading) {
     return (
       <View style={[commonstyles.container, { justifyContent: "center", alignItems: "center" }]}>
         <ActivityIndicator size="large" color={Colors.theme.primary} />
@@ -112,8 +140,7 @@ const App = () => {
     );
   }
 
-  if (!userOrder.length || Object.values(playlistsByUser).every((list) => list.length === 0)) {
-    console.warn("No playlists or userOrder available.");
+  if (Object.values(playlistsByUser).every((list) => list.length === 0)) {
     return (
       <View style={[commonstyles.container, { justifyContent: "center", alignItems: "center" }]}>
         <Text style={{ fontSize: 18, color: "#666" }}>No playlists available</Text>
@@ -136,8 +163,8 @@ const App = () => {
         setShowModal(false);
       }}
     >
-      <View style={styles.centeredView}>
-        <View style={styles.modalView}>
+      <Pressable style={styles.centeredView} onPress={() => setShowModal(false)}>
+        <Pressable style={styles.modalView}>
           <Text style={{ color: Colors.theme.text, fontWeight: 'bold', fontSize: 18 }}>Copy and Paste Spotify User Link</Text>
           <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
             <TextInput
@@ -156,6 +183,7 @@ const App = () => {
               openURL(url);
               } else {
                 addUser(modalUrl);
+                setModalUrl('');
                 setShowModal(false);
               }
             }}
@@ -164,12 +192,12 @@ const App = () => {
               modalUrl ? "Add User" : "Open Spotify"
             }</Text>
           </TouchableOpacity>
-        </View>
-      </View>
+        </Pressable>
+      </Pressable>
     </Modal>
     <View style={[commonstyles.container, { paddingBottom: 0 }]}>
       <DragList
-        data={userOrder}
+        data={user_ids}
         renderItem={({ item: userId, onDragStart, onDragEnd }) => (
           <Pressable
             key={userId}
@@ -178,19 +206,24 @@ const App = () => {
             style={{ marginBottom: 10 }}
           >
             <UserPlaylist
-              userName={userId}
+              id={userId}
+              userName={userNames[userId] || ""}
               playlists={playlistsByUser[userId]}
               onPlaylistPress={(playlistId) => handleUserPlaylistPress(playlistId, userId)}
               loading={false}
+              onRemove={() => {
+                setUser_ids(user_ids.filter((id) => id !== userId));
+              }}
             />
           </Pressable>
         )}
         keyExtractor={(item) => item}
         onReordered={(fromIndex: number, toIndex: number) => {
-          const updatedOrder = [...userOrder];
-          const [movedItem] = updatedOrder.splice(fromIndex, 1);
-          updatedOrder.splice(toIndex, 0, movedItem);
-          onReorder(updatedOrder);
+          const copy = [...user_ids];
+          const removed = copy.splice(fromIndex, 1);
+
+          copy.splice(toIndex, 0, removed[0]);
+          setUser_ids(copy);
         }}
       />
       <View style={{ height: 15 }} />
@@ -252,7 +285,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     padding: 10,
     width: 200,
-    elevation: 2,
+    elevation: 3,
   },
   buttonOpen: {
     backgroundColor: '#F194FF',

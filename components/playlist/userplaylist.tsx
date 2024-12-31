@@ -1,6 +1,8 @@
 import React from "react";
 import { View, Text, FlatList, Image, StyleSheet, TouchableOpacity, ActivityIndicator } from "react-native";
 import { Colors } from "@/constants/Colors";
+import { MaterialIcons } from "@expo/vector-icons";
+import * as Clipboard from 'expo-clipboard';
 
 const back = Colors.theme.background;
 const text = Colors.theme.text;
@@ -14,13 +16,15 @@ interface Playlist {
 }
 
 interface UserPlaylistProps {
+  id: string;
   userName: string; // Title for the playlist section
   playlists: Playlist[]; // Array of playlist data
   onPlaylistPress: (playlistId: string) => void; // Function to handle playlist press
   loading: boolean; // Loading state
+  onRemove: () => void;
 }
 
-export default function UserPlaylist({ userName, playlists, onPlaylistPress, loading }: UserPlaylistProps) {
+export default function UserPlaylist({ id, userName, playlists, onPlaylistPress, loading, onRemove }: UserPlaylistProps) {
   const renderPlaylistButton = ({ item }: { item: Playlist }) => (
     <TouchableOpacity
       style={commonstyles.button}
@@ -39,7 +43,7 @@ export default function UserPlaylist({ userName, playlists, onPlaylistPress, loa
     );
   }
 
-  if (playlists.length === 0) {
+  if (!playlists) {
     return (
       <View style={commonstyles.box}>
         <Text style={commonstyles.boxTitle}>{userName}'s Playlists</Text>
@@ -50,7 +54,20 @@ export default function UserPlaylist({ userName, playlists, onPlaylistPress, loa
 
   return (
     <View style={commonstyles.box}>
+      <View style={{ marginBottom: 15, flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+      <TouchableOpacity style={{ flexDirection: "row", justifyContent: 'center', alignItems: 'center', gap: 5 }}
+        onPress={() => {
+          const url = `https://open.spotify.com/user/${id}`;
+          Clipboard.setStringAsync(url);
+        }}
+      >
       <Text style={commonstyles.boxTitle}>{userName}'s Playlists</Text>
+      <MaterialIcons name="link" size={24} color="rgba(255, 255, 255, 0.5)" />
+      </TouchableOpacity>
+      <TouchableOpacity onPress={onRemove} style={{ backgroundColor: Colors.theme.primary, borderRadius: 20, paddingHorizontal: 8, paddingVertical: 4, elevation: 3 }}>
+        <Text style={{ color: Colors.theme.text, fontSize: 12 }}>Remove</Text>
+      </TouchableOpacity>
+      </View>
       <FlatList
         data={playlists}
         renderItem={renderPlaylistButton}
@@ -83,7 +100,6 @@ export const commonstyles = StyleSheet.create({
   boxTitle: {
     fontSize: 20, // Sets the font size of the title text
     fontWeight: "bold", // Makes the title text bold
-    marginBottom: 15, // Adds spacing below the title
     textAlign: "left", // Aligns the text to the left
     color: text,
     marginLeft:5,
