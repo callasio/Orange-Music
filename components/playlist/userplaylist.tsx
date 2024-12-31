@@ -47,7 +47,7 @@ export default function UserPlaylist({ id, userName, playlists, onPlaylistPress,
     return (
       <View style={commonstyles.box}>
         <Text style={commonstyles.boxTitle}>{userName}'s Playlists</Text>
-        <Text style={{ textAlign: "center", color: text }}>No playlists available</Text>
+        <ActivityIndicator size="large" color={Colors.theme.primary}  />
       </View>
     );
   }
