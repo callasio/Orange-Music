@@ -165,7 +165,7 @@ const App = () => {
     >
       <Pressable style={styles.centeredView} onPress={() => setShowModal(false)}>
         <Pressable style={styles.modalView}>
-          <Text style={{ color: Colors.theme.text, fontWeight: 'bold', fontSize: 18 }}>Copy and Paste Spotify User Link</Text>
+          <Text style={{ color: Colors.theme.text, fontWeight: 'bold', fontSize: 15 }}>Copy and Paste Spotify User Link</Text>
           <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
             <TextInput
             value={modalUrl}
