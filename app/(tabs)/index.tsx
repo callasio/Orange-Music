@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, ActivityIndicator, Text, Pressable, FlatList } from "react-native";
+import { View, ActivityIndicator, Text, Pressable, StyleSheet, TouchableOpacity, Modal, TextInput } from "react-native";
 import { useRouter } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import DragList from "react-native-draglist";
@@ -8,6 +8,8 @@ import { userSavedTrackMultipleUsers } from "../../api/userSavedTrack";
 import { commonstyles } from "../../components/playlist/userplaylist";
 import { Colors } from "@/constants/Colors";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { MaterialIcons } from "@expo/vector-icons";
+import { openURL } from "expo-linking";
 
 const back = Colors.theme.background;
 const line = Colors.theme.primary;
@@ -17,23 +19,26 @@ const App = () => {
   const [playlistsByUser, setPlaylistsByUser] = useState<Record<string, any[]>>({});
   const [userOrder, setUserOrder] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [modalUrl, setModalUrl] = useState('');
 
   // User IDs and their custom titles
-  const user_ids = [
+  const [user_ids, setUser_ids] = useState([
     "31dg76iibcgdmeo2pbdmg2wha5cu",
     "31sjl6f6zhs2cyrebstrjo7m5xgu",
     "ty5kkq44cnlzzvtwwob36mx4g",
     "kerrryk",
     "4n0ohrxqy5e1qymzr391vokkm",
-  ];
+  ]);
 
-  const userTitles: Record<string, string> = {
-    "31dg76iibcgdmeo2pbdmg2wha5cu": "바게트빵's Playlists",
-    "31sjl6f6zhs2cyrebstrjo7m5xgu": "SI_NU's Playlists",
-    "ty5kkq44cnlzzvtwwob36mx4g": "Topsify Radio's Playlists",
-    "kerrryk": "Keri's Playlists",
-    "4n0ohrxqy5e1qymzr391vokkm": "설빈's Playlists",
-  };
+  const addUser = (url: string) => {
+    const lastUrl = url.split("/").pop();
+    const userId = lastUrl?.split("?")[0] ?? "";
+    if (user_ids.includes(userId)) {
+      return;
+    }
+    setUser_ids([userId, ...user_ids]);
+  }
 
   // Fetch playlists and user order
   useEffect(() => {
@@ -69,7 +74,7 @@ const App = () => {
     };
 
     fetchData();
-  }, []);
+  }, [user_ids]);
 
   // Handle playlist press
   const handleUserPlaylistPress = (playlistId: string, userId: string) => {
@@ -117,6 +122,51 @@ const App = () => {
   }
 
   return (
+    <SafeAreaProvider>
+    <SafeAreaView style={{ 
+        backgroundColor: Colors.theme.background,
+        flex: 1,
+        justifyContent: 'flex-end',
+        alignItems: 'flex-end',
+    }}>
+    <Modal
+      transparent={true}
+      visible={showModal}
+      onRequestClose={() => {
+        setShowModal(false);
+      }}
+    >
+      <View style={styles.centeredView}>
+        <View style={styles.modalView}>
+          <Text style={{ color: Colors.theme.text, fontWeight: 'bold', fontSize: 18 }}>Copy and Paste Spotify User Link</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+            <TextInput
+            value={modalUrl}
+            onChangeText={setModalUrl}
+            style={{ flex: 1, height: 40, borderColor: 'gray', borderBottomWidth: 1, marginBottom: 10, color: Colors.theme.text }}
+            placeholder="ex) https://open.spotify.com/user/..."
+            placeholderTextColor='rgba(255,255,255,0.5)'
+          />
+          </View>
+          <TouchableOpacity
+            style={[styles.button, styles.buttonClose]}
+            onPress={() => {
+              if (modalUrl === '') {
+              const url = "https://open.spotify.com";
+              openURL(url);
+              } else {
+                addUser(modalUrl);
+                setShowModal(false);
+              }
+            }}
+          >
+            <Text style={styles.textStyle}>{
+              modalUrl ? "Add User" : "Open Spotify"
+            }</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </Modal>
     <View style={[commonstyles.container, { paddingBottom: 0 }]}>
       <DragList
         data={userOrder}
@@ -128,7 +178,7 @@ const App = () => {
             style={{ marginBottom: 10 }}
           >
             <UserPlaylist
-              title={userTitles[userId]}
+              userName={userId}
               playlists={playlistsByUser[userId]}
               onPlaylistPress={(playlistId) => handleUserPlaylistPress(playlistId, userId)}
               loading={false}
@@ -145,7 +195,81 @@ const App = () => {
       />
       <View style={{ height: 15 }} />
     </View>
+    <TouchableOpacity 
+        style={styles.floatingButton}
+        onPress={() => {
+          setShowModal(true);
+        }}>
+        <MaterialIcons name="add" size={30} color='white' />
+    </TouchableOpacity>
+    </SafeAreaView>
+    </SafeAreaProvider>
   );
 };
+
+const styles = StyleSheet.create({
+    floatingButton: {
+      marginTop: -60,
+      transform: [{translateY: -20}, {translateX: -20}],
+      zIndex: 10,
+      backgroundColor: Colors.theme.primary,
+      width: 60,
+      height: 60,
+      borderRadius: 30, // Circular button
+      justifyContent: 'center',
+      alignItems: 'center',
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.3,
+      shadowRadius: 3,
+      elevation: 5, // For Android shadow
+    },
+
+  centeredView: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalView: {
+    gap: 10,
+    margin: 20,
+    backgroundColor: Colors.theme.secondary,
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  button: {
+    borderRadius: 20,
+    paddingHorizontal: 20,
+    padding: 10,
+    width: 200,
+    elevation: 2,
+  },
+  buttonOpen: {
+    backgroundColor: '#F194FF',
+  },
+  buttonClose: {
+    backgroundColor: Colors.theme.primary,
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  modalText: {
+    color: Colors.theme.text,
+    marginBottom: 15,
+    textAlign: 'center',
+  },
+  });
 
 export default App;

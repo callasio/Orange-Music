@@ -127,12 +127,12 @@ export default function ArtistPage() {
             /></>}
             </View>
         </ParallaxScrollView>
-        <Pressable 
+        <TouchableOpacity 
             style={styles.floatingButton}
             onPress={() => {
                 onLikeChange(!liked)}}>
             <MaterialIcons name={liked ? 'favorite' : 'favorite-outline'} size={30} color='white' />
-        </Pressable>
+        </TouchableOpacity>
         <Toast config={{
             success: (props) => (
                 <SuccessToast {...props} style={{ borderLeftColor: Colors.theme.primary }}/>

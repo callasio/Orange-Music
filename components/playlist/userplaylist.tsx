@@ -14,13 +14,13 @@ interface Playlist {
 }
 
 interface UserPlaylistProps {
-  title: string; // Title for the playlist section
+  userName: string; // Title for the playlist section
   playlists: Playlist[]; // Array of playlist data
   onPlaylistPress: (playlistId: string) => void; // Function to handle playlist press
   loading: boolean; // Loading state
 }
 
-export default function UserPlaylist({ title, playlists, onPlaylistPress, loading }: UserPlaylistProps) {
+export default function UserPlaylist({ userName, playlists, onPlaylistPress, loading }: UserPlaylistProps) {
   const renderPlaylistButton = ({ item }: { item: Playlist }) => (
     <TouchableOpacity
       style={commonstyles.button}
@@ -42,7 +42,7 @@ export default function UserPlaylist({ title, playlists, onPlaylistPress, loadin
   if (playlists.length === 0) {
     return (
       <View style={commonstyles.box}>
-        <Text style={commonstyles.boxTitle}>{title}</Text>
+        <Text style={commonstyles.boxTitle}>{userName}'s Playlists</Text>
         <Text style={{ textAlign: "center", color: text }}>No playlists available</Text>
       </View>
     );
@@ -50,7 +50,7 @@ export default function UserPlaylist({ title, playlists, onPlaylistPress, loadin
 
   return (
     <View style={commonstyles.box}>
-      <Text style={commonstyles.boxTitle}>{title}</Text>
+      <Text style={commonstyles.boxTitle}>{userName}'s Playlists</Text>
       <FlatList
         data={playlists}
         renderItem={renderPlaylistButton}
