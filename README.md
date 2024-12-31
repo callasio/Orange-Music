@@ -31,15 +31,11 @@
 
 ## 팀원
 
-### 이지윤
-성균관대학교 컴퓨터교육과 
-[Github Profile](https://github.com/Jeeyoon038)
-
-
-
-### 이민욱
-KAIST 새내기과정학부
-[Github Profile](https://github.com/callasio)
+| 이민욱 | 이지윤 |
+|:---:|:---:|
+| KAIST 새내기과정학부 | 성균관대학교 컴퓨터교육과 |
+| ryan@sparcs.org | jeeyoon38@gmail.com |
+| [Github Profile](https://github.com/callasio) | [Github Profile](https://github.com/Jeeyoon038) |
 
 ## APK 파일
 
